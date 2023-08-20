@@ -4,6 +4,8 @@ using Gameplay.ShipSystems;
 using Gameplay.Weapons;
 using UnityEngine;
 using Gameplay.Spawners;
+using PlayerSystem;
+
 namespace Gameplay.Spaceships
 {
     public class Spaceship : MonoBehaviour, ISpaceship, IDamagable
@@ -36,7 +38,7 @@ namespace Gameplay.Spaceships
         private void Start()
         {
             _shipController.Init(this);
-            _weaponSystem.Init(_battleIdentity);
+            if(!GetComponent<PlayerView>().isSetCam) _weaponSystem.Init(_battleIdentity);
         }
         void Update()
         {

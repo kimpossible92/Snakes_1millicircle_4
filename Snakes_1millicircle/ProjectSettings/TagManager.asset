@@ -33,15 +33,20 @@ TagManager:
   - Wall
   - Bomb
   - Explosion
+  - Enemy
+  - Floor
+  - MyPlayer
+  - HUDWindowTag
+  - Q_Canvas
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Obstacle
   - Water
   - UI
-  - 
-  - 
+  - Terrain
+  - Projectile
   - 
   - 
   - 

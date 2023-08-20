@@ -10,6 +10,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 using Photon.Pun.Demo.Asteroids;
 using System.Collections.Generic;
+using PlayerSystem;
+
 public class PlayerSpaceship { public string NickName;public int score; }
 public class Const1
 {
@@ -50,7 +52,7 @@ public class GameMM : MonoBehaviourPunCallbacks
     //public GameObject[] AsteroidPrefabs;
 
     #region UNITY
-
+    [SerializeField] private Image HudTargetWindow;
     public void Awake()
     {
         //Instance = this;
@@ -214,7 +216,7 @@ public class GameMM : MonoBehaviourPunCallbacks
         //float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
         int x = Random.Range(-20, 20);
         float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
-        Vector3 position = new Vector3(x, 0.0f, 0);
+        Vector3 position = new Vector3(0, 0.0f, 0);
         Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
         //Debug.Log("[Launcher] JoinRoom Photon");
         GameObject player = MClass.Instance.GetPlayerPrefab;
@@ -222,7 +224,18 @@ public class GameMM : MonoBehaviourPunCallbacks
         if (PhotonNetwork.LocalPlayer.GetPlayerNumber() > -1)
             spawnPos = -spawnPos;
 
-        PhotonNetwork.Instantiate(player.name, position, Quaternion.identity, 0);
+        var pgo = PhotonNetwork.Instantiate(player.name, position, Quaternion.identity, 0);
+        pgo.GetComponentInChildren<HeroClass>().setLocalId = FindObjectOfType<InputTargeting>().isLocalUserId;
+        FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(),pgo.GetComponent<PlayerView>().slider1);
+        FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+        FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass> ());
+        FindObjectOfType<HealthSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider2);
+        FindObjectOfType<TrackEnemyInfo_HUDWindow>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+        FindObjectOfType< HUD_HoverAbilityToolTip>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+        //
+        //FindObjectOfType<InputTargeting>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
+        pgo.GetComponent<InputTargeting>().SetHero(HudTargetWindow);
+        FindObjectOfType<CameraFollow_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
         playerCount = PhotonNetwork.LocalPlayer.GetPlayerNumber();
         //print(PhotonNetwork.LocalPlayer.GetPlayerNumber());
         if (PhotonNetwork.IsMasterClient)

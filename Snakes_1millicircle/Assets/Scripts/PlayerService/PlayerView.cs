@@ -21,16 +21,22 @@ namespace PlayerSystem
         public float joyHorizontal;
         public float joyVertical;
         protected bool jump;
-        private Rigidbody2D myBody;
+        //private Rigidbody2D myBody;
         [HideInInspector]public Vector3 smoothMovement;
         //public Vector3 smMove => smoothMovement;
         float rotationHorizontal;
         [SerializeField] protected JoyButton joyButton;
+        [SerializeField] private bool setCamera = false;
+        public Slider slider1,slider2;
+        //public GameObject Ekcard;
+        public bool isSetCam => setCamera;
         // Start is called before the first frame update
         void Start()
         {
+           
             joyButton = FindObjectOfType<JoyButton>();
-            myBody = GetComponent<Rigidbody2D>();
+            //myBody = GetComponent<Rigidbody2D>();
+            if (setCamera) { playerCamera = Camera.main.gameObject; shotPos = this.gameObject;return; }
             if (pv.IsMine)
             {
                 joystick = FindObjectOfType<Joystick>();
@@ -48,7 +54,11 @@ namespace PlayerSystem
         // Update is called once per frame
         void Update()
         {
-            if(pv.IsMine)
+            if (setCamera)
+            {
+                return;
+            }
+            if (pv.IsMine)
             {
                 Movement();
                 
@@ -59,6 +69,7 @@ namespace PlayerSystem
                 CheckExitScreen();
             }
             GetComponent<Gameplay.ShipControllers.CustomControllers.PlayerShipController>().OnFired();
+            
             //else
             //{
             //    ReadMovement();

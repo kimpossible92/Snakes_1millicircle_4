@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16c62f91b206fd4f9af7a858af1fe9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pv: {fileID: 0}
+  pv: {fileID: -4263922123162969981}
 --- !u!114 &6410759413396383393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -363,6 +363,7 @@ MonoBehaviour:
   joyVertical: 0
   smoothMovement: {x: 0, y: 0, z: 0}
   joyButton: {fileID: 0}
+  setCamera: 0
 --- !u!114 &6910651213156479314
 MonoBehaviour:
   m_ObjectHideFlags: 0

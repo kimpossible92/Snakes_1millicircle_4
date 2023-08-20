@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/sampleScreen.unity
     guid: 61be262abe2b50640aef5275b83748b5
   - enabled: 1
+    path: Assets/Scenes/Backup Test Scene.unity
+    guid: 2f0d98809aaf76d408b16f9b99e037ac
+  - enabled: 1
     path: Assets/Scenes/Launcher.unity
     guid: 9141fe11c219a4897b51661ccd929146
   - enabled: 1

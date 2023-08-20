@@ -39,6 +39,19 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - RpcMoveAttack
+  - CallAbilityCast
+  - CheckAttackRange
+  - CheckCombat
+  - CheckHealth
+  - FaceTarget
+  - MeleeAttack
+  - MeleeAttackInterval
+  - ResetAbilityCastLockout
+  - ResetAutoAttack
+  - ResetCanAttack
+  - Start
+  - Update
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

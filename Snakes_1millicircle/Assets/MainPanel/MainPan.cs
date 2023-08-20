@@ -267,7 +267,7 @@ namespace Assets.Code
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
             InsideRoomPanel.SetActive(false);
-            PhotonNetwork.LoadLevel("Launcher");
+            PhotonNetwork.LoadLevel("Backup Test Scene");
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Gameplay.Spawners
@@ -22,9 +23,11 @@ namespace Gameplay.Spawners
 
         [SerializeField]
         private bool _autoStart = true;
+        [SerializeField] private bool _autoSpawn22 = false;
         [SerializeField]
         private Sprite[] Objects;
         [SerializeField] private int anothermovement = 0;
+        public Slider PlayerHealthHUD;
         public void lvlplus()
         {
             level++;
@@ -38,14 +41,40 @@ namespace Gameplay.Spawners
 
         public void StartSpawn()
         {
-            StartCoroutine(Spawn());
+            //if(!_autoSpawn22)StartCoroutine(Spawn());
+            //else { 
+            StartCoroutine(Spawn22());
+            //}
         }
 
         public void StopSpawn()
         {
             StopAllCoroutines();
         }
+        public bool setSpawnBool()
+        {
+            bool isFind = false;
+            foreach(var obj123 in FindObjectsOfType<EnemySp>())
+            {
+                if (obj123.GetSpawner == this) isFind = true;
+            }
+            return isFind;
+        }
+        private IEnumerator Spawn22()
+        {
+            yield return new WaitForSeconds(Random.Range(_spawnDelayRange.x, _spawnDelayRange.y));
 
+            while (true)
+            {
+                if (!setSpawnBool())
+                {
+                    var enem = Instantiate(_object, transform.position, transform.rotation, _parent);
+                    enem.GetComponent<Enemy_Combat_Script>().SetSliders(PlayerHealthHUD);
+                    enem.GetComponent<EnemySp>().GetSpawner = this;
+                }
+                yield return new WaitForSeconds(Random.Range(_spawnPeriodRange.x, _spawnPeriodRange.y));
+            }
+        }
 
         private IEnumerator Spawn()
         {

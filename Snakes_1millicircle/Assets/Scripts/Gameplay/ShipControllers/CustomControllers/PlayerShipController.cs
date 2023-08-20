@@ -11,6 +11,7 @@ namespace Gameplay.ShipControllers.CustomControllers
         public PhotonView pv;
         protected override void ProcessHandling(MovementSystem movementSystem)
         {
+            if (GetComponent<PlayerView>().isSetCam) { return; }
             if(
                transform.position.x<GetComponent<CollShip>().limitx||
                transform.position.x>GetComponent<CollShip>().limitx1
