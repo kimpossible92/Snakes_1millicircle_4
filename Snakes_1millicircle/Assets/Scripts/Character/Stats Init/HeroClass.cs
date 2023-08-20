@@ -140,6 +140,7 @@ public class HeroClass : MonoBehaviourPun, IPunObservable
     void Update()
     {
         heroSpeed = moveScript.agent.speed;
+        FindObjectOfType<OverviewPanel>().setHealth(Photon.Pun.PhotonNetwork.NickName, (int)heroHealth);
     }
 
     void GetPlayerHotkeys()
