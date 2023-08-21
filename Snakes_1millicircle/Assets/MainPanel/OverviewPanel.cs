@@ -8,6 +8,7 @@ using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Photon.Pun;
 using Photon.Pun.Demo.Asteroids;
+using System.Linq;
 
 public class OverviewPanel : MonoBehaviourPunCallbacks
 {
@@ -56,11 +57,18 @@ public class OverviewPanel : MonoBehaviourPunCallbacks
             if (Nscore.NickName == named) { Nscore.score += 10; }
         }
     }
-    public void setHealth(string named, int health)
+    public void setHealth(int keyd,string named, int health)
     {
         foreach (var Nscore in Nickname)
         {
             if (Nscore.NickName == named) { Nscore.score = (int)health; }
+        }
+        foreach(var plListEnt in playerListEntries)
+        {
+            if (plListEnt.Key == keyd)
+            {
+                plListEnt.Value.GetComponent<Text>().text = string.Format("{0}\nScore: {1}\nLives: {2}", named, 0, health);
+            }   
         }
     }
     public int CurrentScore(string named)

@@ -3148,7 +3148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9e07e57d2bc934a81bbad32634ac50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 330008877}
   rotateVelocity: 0
   targetedEnemyRef: {fileID: 0}
   isEnemyAliveRef: 0
@@ -8436,6 +8436,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InfoText: {fileID: 1158860957}
   HudTargetWindow: {fileID: 604702833}
+  healthTexts: {fileID: 547794970}
+  manaTexts: {fileID: 228626374}
+  expTexts: {fileID: 808617353}
   spawnPos: {x: -20, y: 0, z: 0}
 --- !u!114 &876586601
 MonoBehaviour:
@@ -18839,7 +18842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9e07e57d2bc934a81bbad32634ac50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
+  agent: {fileID: 2043408364}
   rotateVelocity: 0
   targetedEnemyRef: {fileID: 0}
   isEnemyAliveRef: 0
@@ -20525,15 +20528,15 @@ PrefabInstance:
       objectReference: {fileID: 4719682858486813258}
     - target: {fileID: 4719682857952227813, guid: 96a00acb188b63643872b3f399e0b73a, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.991
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4719682857952227813, guid: 96a00acb188b63643872b3f399e0b73a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4719682857952227813, guid: 96a00acb188b63643872b3f399e0b73a, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.991
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4719682858787033316, guid: 96a00acb188b63643872b3f399e0b73a, type: 3}
       propertyPath: m_Name

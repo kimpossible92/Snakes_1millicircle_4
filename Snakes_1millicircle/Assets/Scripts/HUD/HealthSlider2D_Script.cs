@@ -31,7 +31,7 @@ public class HealthSlider2D_Script : MonoBehaviour
         playerSlider2D = GetComponent<Slider>();
         playerSlider3D = slider1;
         playerSlider3D.maxValue = heroClassScript.heroMaxHealth;
-        playerSlider2D.maxValue = heroClassScript.heroMaxHealth;
+        playerSlider2D.maxValue = heroClassScript.heroMaxHealth;heroClassScript.heroHealth = heroClassScript.heroMaxHealth;
         SetSkill = true;
 
     }
@@ -72,6 +72,6 @@ public class HealthSlider2D_Script : MonoBehaviour
     {
         //Debug.Log("Called health HUD trigger!");
         //playerSlider2D.value = targetedEnemyRef.GetComponent<HeroClass>().heroHealth;
-        // playerSlider3D.value = playerSlider2D.value;
+        //playerSlider3D.value = playerSlider2D.value;
     }
 }

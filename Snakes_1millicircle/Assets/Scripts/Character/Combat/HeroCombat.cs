@@ -83,7 +83,7 @@ public class HeroCombat : MonoBehaviour//PunCallbacks
                     moveScript.agent.SetDestination(targetedEnemy.transform.position);
                     moveScript.agent.stoppingDistance = heroAttackRange;
                 }
-                print(Vector3.Distance(gameObject.transform.position, targetedEnemy.transform.position));
+                //print(Vector3.Distance(gameObject.transform.position, targetedEnemy.transform.position));
             }
             else if (Vector3.Distance(gameObject.transform.position, targetedEnemy.transform.position) < heroAttackRange)// && moveToEnemy == true) // once inside range, and can move
             {
@@ -103,7 +103,7 @@ public class HeroCombat : MonoBehaviour//PunCallbacks
                             StartCoroutine(MeleeAttackInterval());
                     }
                 }
-                print("ismine2");
+                //print("ismine2");
             }
             
         }
@@ -113,7 +113,7 @@ public class HeroCombat : MonoBehaviour//PunCallbacks
             performMeleeAttack = true;
             prevEnemyRef = null;
             enemyToAttack = null;
-            print("ismine3");
+            //print("ismine3");
         }
     }
     IEnumerator MeleeAttackInterval()

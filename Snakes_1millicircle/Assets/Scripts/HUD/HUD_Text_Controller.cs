@@ -23,6 +23,7 @@ public class HUD_Text_Controller : MonoBehaviour
     public void SetHero(HeroClass playerSl)
     {
         heroClassScript = playerSl;
+        statText = GetComponent<TextMeshProUGUI>();
         SetSkill = true;
     }
     // Update is called once per frame
@@ -30,7 +31,7 @@ public class HUD_Text_Controller : MonoBehaviour
     {
         //heroClassScript.heroHealth = Mathf.Round(heroClassScript.heroHealth * 100f) / 100f;
         if(heroClassScript == null) { return; }
-        
+        //print(typeOfStat);
         switch (typeOfStat)
         {
             case TypeOfStat.health:
@@ -38,7 +39,7 @@ public class HUD_Text_Controller : MonoBehaviour
                 break;
 
             case TypeOfStat.mana:
-                //statText.text = (heroClassScript.heroMana + "/" + heroClassScript.heroMaxMana);
+                statText.text = (heroClassScript.heroMana + "/" + heroClassScript.heroMaxMana);
                 break;
 
             case TypeOfStat.xp:

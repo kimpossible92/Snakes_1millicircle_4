@@ -53,6 +53,7 @@ public class GameMM : MonoBehaviourPunCallbacks
 
     #region UNITY
     [SerializeField] private Image HudTargetWindow;
+    [SerializeField] HUD_Text_Controller healthTexts, manaTexts, expTexts;
     public void Awake()
     {
         //Instance = this;
@@ -140,7 +141,7 @@ public class GameMM : MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("DemoAsteroids-LobbyScene");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("sampleScreen");
     }
 
     public override void OnLeftRoom()
@@ -226,10 +227,14 @@ public class GameMM : MonoBehaviourPunCallbacks
 
         var pgo = PhotonNetwork.Instantiate(player.name, position, Quaternion.identity, 0);
         pgo.GetComponentInChildren<HeroClass>().setLocalId = FindObjectOfType<InputTargeting>().isLocalUserId;
-        FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(),pgo.GetComponent<PlayerView>().slider1);
-        FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
-        FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass> ());
         FindObjectOfType<HealthSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider2);
+        FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(),pgo.GetComponent<PlayerView>().slider1);
+        FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+        //FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+        healthTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+        manaTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+        expTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+
         FindObjectOfType<TrackEnemyInfo_HUDWindow>().SetHero(pgo.GetComponentInChildren<HeroClass>());
         FindObjectOfType< HUD_HoverAbilityToolTip>().SetHero(pgo.GetComponentInChildren<HeroClass>());
         //

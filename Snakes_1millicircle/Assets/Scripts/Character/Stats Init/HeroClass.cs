@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using PlayerSystem;
+using Photon.Realtime;
+
 public class HeroClass : MonoBehaviourPun, IPunObservable
 {
     public enum HeroAssigner { Ekard, Jawn }
@@ -140,7 +142,11 @@ public class HeroClass : MonoBehaviourPun, IPunObservable
     void Update()
     {
         heroSpeed = moveScript.agent.speed;
-        FindObjectOfType<OverviewPanel>().setHealth(Photon.Pun.PhotonNetwork.NickName, (int)heroHealth);
+        
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            if(p.IsLocal) { FindObjectOfType<OverviewPanel>().setHealth(p.ActorNumber,Photon.Pun.PhotonNetwork.NickName, (int)heroHealth); }
+        }
     }
 
     void GetPlayerHotkeys()
