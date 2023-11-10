@@ -14,7 +14,7 @@ using UnityEngine.UI;
 namespace Photon.Pun.Demo.PunBasics
 {
 	/// <summary>
-	/// Player name input field. Let the user input his name, will appear above the player in the game.
+	/// Player2 name input field. Let the user input his name, will appear above the player in the game.
 	/// </summary>
 	[RequireComponent(typeof(InputField))]
 	public class PlayerNameInputField : MonoBehaviour
@@ -55,13 +55,13 @@ namespace Photon.Pun.Demo.PunBasics
 		/// <summary>
 		/// Sets the name of the player, and save it in the PlayerPrefs for future sessions.
 		/// </summary>
-		/// <param name="value">The name of the Player</param>
+		/// <param name="value">The name of the Player2</param>
 		public void SetPlayerName(string value)
 		{
 			// #Important
 		    if (string.IsNullOrEmpty(value))
 		    {
-                Debug.LogError("Player Name is null or empty");
+                Debug.LogError("Player2 Name is null or empty");
 		        return;
 		    }
 			PhotonNetwork.NickName = value;

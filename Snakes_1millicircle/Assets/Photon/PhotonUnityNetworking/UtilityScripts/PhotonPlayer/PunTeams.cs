@@ -3,7 +3,7 @@
 //   Part of: Photon Unity Utilities, 
 // </copyright>
 // <summary>
-// Implements teams in a room/game with help of player properties. Access them by Player.GetTeam extension.
+// Implements teams in a room/game with help of player properties. Access them by Player2.GetTeam extension.
 // </summary>
 // <remarks>
 // Teams are defined by enum Team. Change this to get more / different teams.
@@ -25,7 +25,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 namespace Photon.Pun.UtilityScripts
 {
     /// <summary>
-    /// Implements teams in a room/game with help of player properties. Access them by Player.GetTeam extension.
+    /// Implements teams in a room/game with help of player properties. Access them by Player2.GetTeam extension.
     /// </summary>
     /// <remarks>
     /// Teams are defined by enum Team. Change this to get more / different teams.
@@ -41,7 +41,7 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
         /// <remarks>Note that this is static. Can be accessed by PunTeam.PlayersPerTeam. You should not modify this.</remarks>
         [Obsolete("use PhotonTeamsManager.Instance.TryGetTeamMembers instead")]
-        public static Dictionary<Team, List<Player>> PlayersPerTeam;
+        public static Dictionary<Team, List<Player2>> PlayersPerTeam;
 
         /// <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
         [Obsolete("do not use this. PhotonTeamsManager.TeamPlayerProp is used internally instead.")]
@@ -52,11 +52,11 @@ namespace Photon.Pun.UtilityScripts
 
         public void Start()
         {
-            PlayersPerTeam = new Dictionary<Team, List<Player>>();
+            PlayersPerTeam = new Dictionary<Team, List<Player2>>();
             Array enumVals = Enum.GetValues(typeof(Team));
             foreach (var enumVal in enumVals)
             {
-                PlayersPerTeam[(Team)enumVal] = new List<Player>();
+                PlayersPerTeam[(Team)enumVal] = new List<Player2>();
             }
         }
 
@@ -81,17 +81,17 @@ namespace Photon.Pun.UtilityScripts
 
         /// <summary>Refreshes the team lists. It could be a non-team related property change, too.</summary>
         /// <remarks>Called by PUN. See enum MonoBehaviourPunCallbacks for an explanation.</remarks>
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             this.UpdateTeams();
         }
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             this.UpdateTeams();
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnPlayerEnteredRoom(Player2 newPlayer)
         {
             this.UpdateTeams();
         }
@@ -109,20 +109,20 @@ namespace Photon.Pun.UtilityScripts
 
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
-                Player player = PhotonNetwork.PlayerList[i];
+                Player2 player = PhotonNetwork.PlayerList[i];
                 Team playerTeam = player.GetTeam();
                 PlayersPerTeam[playerTeam].Add(player);
             }
         }
     }
 
-    /// <summary>Extension used for PunTeams and Player class. Wraps access to the player's custom property.</summary>
+    /// <summary>Extension used for PunTeams and Player2 class. Wraps access to the player's custom property.</summary>
     public static class TeamExtensions
     {
-        /// <summary>Extension for Player class to wrap up access to the player's custom property.</summary>
+        /// <summary>Extension for Player2 class to wrap up access to the player's custom property.</summary>
         /// <returns>PunTeam.Team.none if no team was found (yet).</returns>
         [Obsolete("Use player.GetPhotonTeam")]
-        public static PunTeams.Team GetTeam(this Player player)
+        public static PunTeams.Team GetTeam(this Player2 player)
         {
             object teamId;
             if (player.CustomProperties.TryGetValue(PunTeams.TeamPlayerProp, out teamId))
@@ -138,7 +138,7 @@ namespace Photon.Pun.UtilityScripts
         /// <param name="player"></param>
         /// <param name="team"></param>
         [Obsolete("Use player.JoinTeam")]
-        public static void SetTeam(this Player player, PunTeams.Team team)
+        public static void SetTeam(this Player2 player, PunTeams.Team team)
         {
             if (!PhotonNetwork.IsConnectedAndReady)
             {

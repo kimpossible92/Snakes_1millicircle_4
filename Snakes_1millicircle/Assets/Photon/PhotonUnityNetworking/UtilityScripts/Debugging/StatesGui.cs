@@ -143,7 +143,7 @@ namespace Photon.Pun.UtilityScripts
             }
             if (Others)
             {
-                foreach (Player player in PhotonNetwork.PlayerListOthers)
+                foreach (Player2 player in PhotonNetwork.PlayerListOthers)
                 {
                     GUILayout.Label(PlayerToString(player));
                 }
@@ -199,7 +199,7 @@ namespace Photon.Pun.UtilityScripts
             GUILayout.EndArea();
         }
 
-        private string PlayerToString(Player player)
+        private string PlayerToString(Player2 player)
         {
             if (PhotonNetwork.NetworkingClient == null)
             {

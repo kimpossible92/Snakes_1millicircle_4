@@ -24,8 +24,9 @@ public class HUD_HoverAbilityToolTip : MonoBehaviour, IPointerEnterHandler, IPoi
     public void Start()
     {
         if (!SetSkill) { return; }
+        playerHeroClass = GameObject.FindGameObjectWithTag("MyPlayer");
         heroClass = playerHeroClass.GetComponent<HeroClass>();
-
+        
         AbilityToolTipWindow.sprite = NoVisual_Sprite;
         abilityNameText.text = "";
         abilityCostText.text = "";

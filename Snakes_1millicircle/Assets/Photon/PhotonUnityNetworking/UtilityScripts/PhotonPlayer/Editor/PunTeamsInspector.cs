@@ -36,7 +36,7 @@ namespace Photon.Pun.UtilityScripts
 
 			if (PunTeams.PlayersPerTeam!=null)
 			{
-				foreach (KeyValuePair<PunTeams.Team,List<Player>> _pair in PunTeams.PlayersPerTeam)
+				foreach (KeyValuePair<PunTeams.Team,List<Player2>> _pair in PunTeams.PlayersPerTeam)
 				{	
 #pragma warning restore 0618
 					if (!_Foldouts.ContainsKey(_pair.Key))
@@ -49,7 +49,7 @@ namespace Photon.Pun.UtilityScripts
 					if (_Foldouts[_pair.Key])
 					{
 						EditorGUI.indentLevel++;
-						foreach(Player _player in _pair.Value)
+						foreach(Player2 _player in _pair.Value)
 						{
 							EditorGUILayout.LabelField("",_player.ToString() + (PhotonNetwork.LocalPlayer==_player?" - You -":""));
 						}

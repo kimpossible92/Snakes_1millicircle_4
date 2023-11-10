@@ -143,9 +143,20 @@ public class HeroClass : MonoBehaviourPun, IPunObservable
     {
         heroSpeed = moveScript.agent.speed;
         
-        foreach (Player p in PhotonNetwork.PlayerList)
+        foreach (Player2 p in PhotonNetwork.PlayerList)
         {
-            if(p.IsLocal) { FindObjectOfType<OverviewPanel>().setHealth(p.ActorNumber,Photon.Pun.PhotonNetwork.NickName, (int)heroHealth); }
+            //if (p.IsLocal)
+            //{ 
+            //    FindObjectOfType<OverviewPanel>().setHealth(p.ActorNumber, Photon.Pun.PhotonNetwork.NickName, (int)heroHealth); 
+            //}
+            if (p.IsLocal)
+            {
+                FindObjectOfType<OverviewPanel>().setHealth(p.ActorNumber, Photon.Pun.PhotonNetwork.NickName, (int)heroHealth);
+            }
+            else 
+            { 
+                FindObjectOfType<OverviewPanel>().setHealth(p.ActorNumber, "playerlocal", (int)heroHealth); 
+            }
         }
     }
 
@@ -165,15 +176,15 @@ public class HeroClass : MonoBehaviourPun, IPunObservable
         {
             case HeroAssigner.Ekard:
                 Hero_Ekard_Ability_Init();
-                Debug.Log("Assigned Hero is " + HeroName);
+                //Debug.Log("Assigned Hero is " + HeroName);
                 break;
 
             case HeroAssigner.Jawn:
-                Debug.Log("Assigned Hero is " + HeroName);
+                //Debug.Log("Assigned Hero is " + HeroName);
                 break;
 
             default:
-                Debug.Log("No Hero Assigned!");
+                //Debug.Log("No Hero Assigned!");
                 break;
         }
     }
@@ -186,7 +197,7 @@ public class HeroClass : MonoBehaviourPun, IPunObservable
         {
             case (HeroAssigner.Ekard):
                 heroHUDSprite = Resources.Load<Sprite>("HeroHUDIcons/Ekard_HUD_Sprite");
-                Debug.Log("Loaded " + heroAssigner.ToString() + " sprite");
+                //Debug.Log("Loaded " + heroAssigner.ToString() + " sprite");
                 break;
 
             default:

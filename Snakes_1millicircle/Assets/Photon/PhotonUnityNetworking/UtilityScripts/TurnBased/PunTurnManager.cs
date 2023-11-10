@@ -23,7 +23,7 @@ namespace Photon.Pun.UtilityScripts
     /// <summary>
     /// Pun turnBased Game manager.
     /// Provides an Interface (IPunTurnManagerCallbacks) for the typical turn flow and logic, between players
-    /// Provides Extensions for Player, Room and RoomInfo to feature dedicated api for TurnBased Needs
+    /// Provides Extensions for Player2, Room and RoomInfo to feature dedicated api for TurnBased Needs
     /// </summary>
 	public class PunTurnManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
@@ -31,7 +31,7 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// External definition for better garbage collection management, used in ProcessEvent.
         /// </summary>
-        Player sender;
+        Player2 sender;
         
         /// <summary>
         /// Wraps accessing the "turn" custom properties of a room.
@@ -111,7 +111,7 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// The finished players.
         /// </summary>
-        private readonly HashSet<Player> finishedPlayers = new HashSet<Player>();
+        private readonly HashSet<Player2> finishedPlayers = new HashSet<Player2>();
 
         /// <summary>
         /// The turn manager event offset event message byte. Used internaly for defining data in Room Custom Properties
@@ -193,8 +193,8 @@ namespace Photon.Pun.UtilityScripts
         /// Gets if the player finished the current turn.
         /// </summary>
         /// <returns><c>true</c>, if player finished the current turn, <c>false</c> otherwise.</returns>
-        /// <param name="player">The Player to check for</param>
-        public bool GetPlayerFinishedTurn(Player player)
+        /// <param name="player">The Player2 to check for</param>
+        public bool GetPlayerFinishedTurn(Player2 player)
         {
             if (player != null && this.finishedPlayers != null && this.finishedPlayers.Contains(player))
             {
@@ -297,18 +297,18 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// Called when a player moved (but did not finish the turn)
         /// </summary>
-        /// <param name="player">Player reference</param>
+        /// <param name="player">Player2 reference</param>
         /// <param name="turn">Turn Index</param>
         /// <param name="move">Move Object data</param>
-        void OnPlayerMove(Player player, int turn, object move);
+        void OnPlayerMove(Player2 player, int turn, object move);
 
         /// <summary>
         /// When a player finishes a turn (includes the action/move of that player)
         /// </summary>
-        /// <param name="player">Player reference</param>
+        /// <param name="player">Player2 reference</param>
         /// <param name="turn">Turn index</param>
         /// <param name="move">Move Object data</param>
-        void OnPlayerFinished(Player player, int turn, object move);
+        void OnPlayerFinished(Player2 player, int turn, object move);
 
 
         /// <summary>
@@ -394,8 +394,8 @@ namespace Photon.Pun.UtilityScripts
         /// gets the player's finished turn (from the ROOM properties)
         /// </summary>
         /// <returns>The finished turn index</returns>
-        /// <param name="player">Player reference</param>
-        public static int GetFinishedTurn(this Player player)
+        /// <param name="player">Player2 reference</param>
+        public static int GetFinishedTurn(this Player2 player)
         {
             Room room = PhotonNetwork.CurrentRoom;
             if (room == null || room.CustomProperties == null || !room.CustomProperties.ContainsKey(TurnPropKey))
@@ -410,9 +410,9 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// Sets the player's finished turn (in the ROOM properties)
         /// </summary>
-        /// <param name="player">Player Reference</param>
+        /// <param name="player">Player2 Reference</param>
         /// <param name="turn">Turn Index</param>
-        public static void SetFinishedTurn(this Player player, int turn)
+        public static void SetFinishedTurn(this Player2 player, int turn)
         {
             Room room = PhotonNetwork.CurrentRoom;
             if (room == null || room.CustomProperties == null)

@@ -93,9 +93,9 @@ public class offcorm : ProjectilePool
     [SerializeField] int hard = 100;
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (gameObject.tag == "enemy" && collision.gameObject.tag == "Player")
+        if (gameObject.tag == "enemy" && collision.gameObject.tag == "Player2")
         {
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.tag == "Player2")
             {
                 if (transform.localScale.x == 1) { FindObjectOfType<Road>().addScore(hard); }
                 if (transform.localScale.x == 2) { FindObjectOfType<Road>().addScore(medium); }
@@ -152,7 +152,7 @@ public class offcorm : ProjectilePool
                     pos2 = -1;
                 }
             }
-            else if (transform.localScale.x == 1 && collision.gameObject.tag == "Player")
+            else if (transform.localScale.x == 1 && collision.gameObject.tag == "Player2")
             {
                 FindObjectOfType<Road>().removeCorm(this);
                 Destroy(gameObject);

@@ -221,7 +221,7 @@ public class AbilityTracker : MonoBehaviour
                     position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
                 }
 
-                // Skillshot Indicator Rotation Around Player Code
+                // Skillshot Indicator Rotation Around Player2 Code
                 Quaternion transRot = Quaternion.LookRotation(position - playerTransform.transform.position);
                 transRot.eulerAngles = new Vector3(0, transRot.eulerAngles.y, 0);
                 abilityCanvas.transform.rotation = Quaternion.Lerp(transRot, abilityCanvas.transform.rotation, 0f);

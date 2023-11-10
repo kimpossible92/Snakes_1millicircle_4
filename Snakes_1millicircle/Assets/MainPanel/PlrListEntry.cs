@@ -71,7 +71,7 @@ public class PlrListEntry : MonoBehaviour
 
     private void OnPlayerNumberingChanged()
     {
-        foreach (Player p in PhotonNetwork.PlayerList)
+        foreach (Player2 p in PhotonNetwork.PlayerList)
         {
             if (p.ActorNumber == ownerId)
             {

@@ -3,7 +3,7 @@
 //   Part of: Asteroid Demo,
 // </copyright>
 // <summary>
-//  Player List Entry
+//  Player2 List Entry
 // </summary>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         private void OnPlayerNumberingChanged()
         {
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 if (p.ActorNumber == ownerId)
                 {

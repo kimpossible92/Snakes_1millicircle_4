@@ -99,7 +99,7 @@ namespace Photon.Pun.Demo.Asteroids
 
             while (timer > 0.0f)
             {
-                InfoText.text = string.Format("Player {0} won with {1} points.\n\n\nReturning to login screen in {2} seconds.", winner, score, timer.ToString("n2"));
+                InfoText.text = string.Format("Player2 {0} won with {1} points.\n\n\nReturning to login screen in {2} seconds.", winner, score, timer.ToString("n2"));
 
                 yield return new WaitForEndOfFrame();
 
@@ -123,7 +123,7 @@ namespace Photon.Pun.Demo.Asteroids
             PhotonNetwork.Disconnect();
         }
 
-        public override void OnMasterClientSwitched(Player newMasterClient)
+        public override void OnMasterClientSwitched(Player2 newMasterClient)
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
             {
@@ -131,12 +131,12 @@ namespace Photon.Pun.Demo.Asteroids
             }
         }
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             CheckEndOfGame();
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             if (changedProps.ContainsKey(AsteroidsGame.PLAYER_LIVES))
             {
@@ -201,7 +201,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         private bool CheckAllPlayerLoadedLevel()
         {
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 object playerLoadedLevel;
 
@@ -223,7 +223,7 @@ namespace Photon.Pun.Demo.Asteroids
         {
             bool allDestroyed = true;
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 object lives;
                 if (p.CustomProperties.TryGetValue(AsteroidsGame.PLAYER_LIVES, out lives))
@@ -246,7 +246,7 @@ namespace Photon.Pun.Demo.Asteroids
                 string winner = "";
                 int score = -1;
 
-                foreach (Player p in PhotonNetwork.PlayerList)
+                foreach (Player2 p in PhotonNetwork.PlayerList)
                 {
                     if (p.GetScore() > score)
                     {

@@ -22,7 +22,7 @@ public class OverviewPanel : MonoBehaviourPunCallbacks
     {
         playerListEntries = new Dictionary<int, GameObject>();
         Nickname = Nickname = new List<PlayerSpaceship>();
-        foreach (Player p in PhotonNetwork.PlayerList)
+        foreach (Player2 p in PhotonNetwork.PlayerList)
         {
             GameObject entry = Instantiate(PlayerOverviewEntryPrefab);
             entry.transform.SetParent(gameObject.transform);
@@ -80,7 +80,7 @@ public class OverviewPanel : MonoBehaviourPunCallbacks
         }
         return n;
     }
-    public override void OnPlayerLeftRoom(Player otherPlayer)
+    public override void OnPlayerLeftRoom(Player2 otherPlayer)
     {
         GameObject go = null;
         if (this.playerListEntries.TryGetValue(otherPlayer.ActorNumber, out go))
@@ -90,7 +90,7 @@ public class OverviewPanel : MonoBehaviourPunCallbacks
         }
     }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
     {
         GameObject entry;
         if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))

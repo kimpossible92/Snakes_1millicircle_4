@@ -54,11 +54,11 @@ namespace Photon.Pun
         ///
         /// PhotonView view = viewAndPlayer[0] as PhotonView;
         ///
-        /// Player requestingPlayer = viewAndPlayer[1] as Player;
+        /// Player2 requestingPlayer = viewAndPlayer[1] as Player2;
         /// </remarks>
         /// <param name="targetView">PhotonView for which ownership gets requested.</param>
-        /// <param name="requestingPlayer">Player who requests ownership.</param>
-        void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer);
+        /// <param name="requestingPlayer">Player2 who requests ownership.</param>
+        void OnOwnershipRequest(PhotonView targetView, Player2 requestingPlayer);
 
         /// <summary>
         /// Called when ownership of a PhotonView is transfered to another player.
@@ -68,14 +68,14 @@ namespace Photon.Pun
         ///
         /// PhotonView view = viewAndPlayers[0] as PhotonView;
         ///
-        /// Player newOwner = viewAndPlayers[1] as Player;
+        /// Player2 newOwner = viewAndPlayers[1] as Player2;
         ///
-        /// Player oldOwner = viewAndPlayers[2] as Player;
+        /// Player2 oldOwner = viewAndPlayers[2] as Player2;
         /// </remarks>
         /// <example>void OnOwnershipTransfered(object[] viewAndPlayers) {} //</example>
         /// <param name="targetView">PhotonView for which ownership changed.</param>
-        /// <param name="previousOwner">Player who was the previous owner (or null, if none).</param>
-        void OnOwnershipTransfered(PhotonView targetView, Player previousOwner);
+        /// <param name="previousOwner">Player2 who was the previous owner (or null, if none).</param>
+        void OnOwnershipTransfered(PhotonView targetView, Player2 previousOwner);
         
         /// <summary>
         /// Called when an Ownership Request fails for objects with "takeover" setting.
@@ -86,7 +86,7 @@ namespace Photon.Pun
         /// </remarks>
         /// <param name="targetView"></param>
         /// <param name="senderOfFailedRequest"></param>
-        void OnOwnershipTransferFailed(PhotonView targetView, Player senderOfFailedRequest);
+        void OnOwnershipTransferFailed(PhotonView targetView, Player2 senderOfFailedRequest);
     }
 
     /// \ingroup callbacks

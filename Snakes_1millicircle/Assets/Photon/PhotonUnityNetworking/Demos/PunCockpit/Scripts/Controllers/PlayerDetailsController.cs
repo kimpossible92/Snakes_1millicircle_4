@@ -43,7 +43,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         Dictionary<string, PropertyCell> builtInPropsCellList = new Dictionary<string, PropertyCell>();
 
-        Player _player;
+        Player2 _player;
 
 
         void Awake()
@@ -69,7 +69,7 @@ namespace Photon.Pun.Demo.Cockpit
         }
 
 
-        public void SetPlayerTarget(Player player)
+        public void SetPlayerTarget(Player2 player)
         {
             //Debug.Log("SetPlayerTarget " + player);
             this._player = player;
@@ -85,7 +85,7 @@ namespace Photon.Pun.Demo.Cockpit
             }
 
 			// PlayerNumbering extension
-            this.AddProperty("Player Number", "#" + player.GetPlayerNumber().ToString("00"), this.PlayerNumberingExtensionPanel);
+            this.AddProperty("Player2 Number", "#" + player.GetPlayerNumber().ToString("00"), this.PlayerNumberingExtensionPanel);
 
 
 			// Score extension
@@ -142,18 +142,18 @@ namespace Photon.Pun.Demo.Cockpit
 
         #region Photon CallBacks
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             NotInRoomLabel.SetActive(otherPlayer == _player);
             ContentPanel.SetActive(otherPlayer != _player);
         }
 
-        public override void OnMasterClientSwitched(Player newMasterClient)
+        public override void OnMasterClientSwitched(Player2 newMasterClient)
         {
             MasterClientToolBar.SetActive(_player == newMasterClient);
         }
 
-        public override void OnPlayerPropertiesUpdate(Player target, ExitGames.Client.Photon.Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 target, ExitGames.Client.Photon.Hashtable changedProps)
         {
             //Debug.Log("OnPlayerPropertiesUpdate " + target.ActorNumber + " " + target.ToStringFull() + " " + changedProps.ToStringFull());
 
@@ -187,7 +187,7 @@ namespace Photon.Pun.Demo.Cockpit
         {
             if (_player != null)
             { // we might be called before player is setup
-                this.builtInPropsCellList["Player Number"].UpdateInfo("#" + _player.GetPlayerNumber().ToString("00"));
+                this.builtInPropsCellList["Player2 Number"].UpdateInfo("#" + _player.GetPlayerNumber().ToString("00"));
             }
 
         }

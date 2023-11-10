@@ -143,7 +143,7 @@ namespace Photon.Pun.UtilityScripts
 					return null;
 
 				if (!PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(validated).Contains("/Resources"))
-					Debug.LogWarning("Player Prefab needs to be a Prefab in a Resource folder.");
+					Debug.LogWarning("Player2 Prefab needs to be a Prefab in a Resource folder.");
 			}
 #else
             GameObject validated = unvalidated;

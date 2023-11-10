@@ -50,7 +50,7 @@ namespace Photon.Pun.Demo.Asteroids
             cachedRoomList = new Dictionary<string, RoomInfo>();
             roomListEntries = new Dictionary<string, GameObject>();
             
-            PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
+            PlayerNameInput.text = "Player2 " + Random.Range(1000, 10000);
         }
 
         #endregion
@@ -116,7 +116,7 @@ namespace Photon.Pun.Demo.Asteroids
                 playerListEntries = new Dictionary<int, GameObject>();
             }
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 GameObject entry = Instantiate(PlayerListEntryPrefab);
                 entry.transform.SetParent(InsideRoomPanel.transform);
@@ -154,7 +154,7 @@ namespace Photon.Pun.Demo.Asteroids
             playerListEntries = null;
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnPlayerEnteredRoom(Player2 newPlayer)
         {
             GameObject entry = Instantiate(PlayerListEntryPrefab);
             entry.transform.SetParent(InsideRoomPanel.transform);
@@ -166,7 +166,7 @@ namespace Photon.Pun.Demo.Asteroids
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
             playerListEntries.Remove(otherPlayer.ActorNumber);
@@ -174,7 +174,7 @@ namespace Photon.Pun.Demo.Asteroids
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
-        public override void OnMasterClientSwitched(Player newMasterClient)
+        public override void OnMasterClientSwitched(Player2 newMasterClient)
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
             {
@@ -182,7 +182,7 @@ namespace Photon.Pun.Demo.Asteroids
             }
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             if (playerListEntries == null)
             {
@@ -253,7 +253,7 @@ namespace Photon.Pun.Demo.Asteroids
             }
             else
             {
-                Debug.LogError("Player Name is invalid.");
+                Debug.LogError("Player2 Name is invalid.");
             }
         }
 
@@ -284,7 +284,7 @@ namespace Photon.Pun.Demo.Asteroids
                 return false;
             }
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(AsteroidsGame.PLAYER_READY, out isPlayerReady))

@@ -39,13 +39,13 @@ namespace Photon.Pun.UtilityScripts
 
 			if (PhotonNetwork.InRoom)
 			{
-				EditorGUILayout.LabelField("Player Index", "Player ID");
+				EditorGUILayout.LabelField("Player2 Index", "Player2 ID");
 				if (PlayerNumbering.SortedPlayers != null)
 				{
-					foreach(Player punPlayer in PlayerNumbering.SortedPlayers)
+					foreach(Player2 punPlayer in PlayerNumbering.SortedPlayers)
 					{
 						GUI.enabled = punPlayer.ActorNumber > 0;
-						EditorGUILayout.LabelField("Player " +punPlayer.GetPlayerNumber() + (punPlayer.IsLocal?" - You -":""), punPlayer.ActorNumber == 0?"n/a":punPlayer.ToStringFull());
+						EditorGUILayout.LabelField("Player2 " +punPlayer.GetPlayerNumber() + (punPlayer.IsLocal?" - You -":""), punPlayer.ActorNumber == 0?"n/a":punPlayer.ToStringFull());
 						GUI.enabled = true;
 					}
 				}

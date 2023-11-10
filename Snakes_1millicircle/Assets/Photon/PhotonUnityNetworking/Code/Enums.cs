@@ -35,10 +35,10 @@ namespace Photon.Pun
     /// \ingroup publicApi
     public enum RpcTarget
     {
-        /// <summary>Sends the RPC to everyone else and executes it immediately on this client. Player who join later will not execute this RPC.</summary>
+        /// <summary>Sends the RPC to everyone else and executes it immediately on this client. Player2 who join later will not execute this RPC.</summary>
         All,
 
-        /// <summary>Sends the RPC to everyone else. This client does not execute the RPC. Player who join later will not execute this RPC.</summary>
+        /// <summary>Sends the RPC to everyone else. This client does not execute the RPC. Player2 who join later will not execute this RPC.</summary>
         Others,
 
         /// <summary>Sends the RPC to MasterClient only. Careful: The MasterClient might disconnect before it executes the RPC and that might cause dropped RPCs.</summary>

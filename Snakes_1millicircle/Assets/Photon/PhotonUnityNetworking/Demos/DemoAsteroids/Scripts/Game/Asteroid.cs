@@ -79,7 +79,7 @@ namespace Photon.Pun.Demo.Asteroids
                     DestroyAsteroidLocally();
                 }
             }
-            else if (collision.gameObject.CompareTag("Player"))
+            else if (collision.gameObject.CompareTag("Player2"))
             {
                 if (photonView.IsMine)
                 {

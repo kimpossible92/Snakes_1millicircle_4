@@ -6,6 +6,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun.Demo.Asteroids;
 using UISystem;
+using Photon.Pun.UtilityScripts;
+using UnityEngine.SceneManagement;
+
 namespace Assets.Code
 {
     public class MainPan : MonoBehaviourPunCallbacks
@@ -16,7 +19,7 @@ namespace Assets.Code
         public GameObject CreateRoomPanel;
         public InputField RoomNameInputField;
         public InputField MaxPlayersInputField;
-
+        [SerializeField] private new_offline_mode new_Offline_Mode1;
         internal void SetUIService(UIService uiService)
         {
             throw new System.NotImplementedException();
@@ -47,7 +50,7 @@ namespace Assets.Code
             cachedRoomList = new Dictionary<string, RoomInfo>();
             roomListEntries = new Dictionary<string, GameObject>();
 
-            PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
+            PlayerNameInput.text = "Player2 " + Random.Range(1000, 10000);
         }
 
         #endregion
@@ -111,7 +114,7 @@ namespace Assets.Code
                 playerListEntries = new Dictionary<int, GameObject>();
             }
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 GameObject entry = Instantiate(PlayerListEntryPrefab);
                 entry.transform.SetParent(InsideRoomPanel.transform);
@@ -150,7 +153,7 @@ namespace Assets.Code
             playerListEntries = null;
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnPlayerEnteredRoom(Player2 newPlayer)
         {
             GameObject entry = Instantiate(PlayerListEntryPrefab);
             entry.transform.SetParent(InsideRoomPanel.transform);
@@ -162,7 +165,7 @@ namespace Assets.Code
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
             playerListEntries.Remove(otherPlayer.ActorNumber);
@@ -170,7 +173,7 @@ namespace Assets.Code
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
-        public override void OnMasterClientSwitched(Player newMasterClient)
+        public override void OnMasterClientSwitched(Player2 newMasterClient)
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
             {
@@ -178,7 +181,7 @@ namespace Assets.Code
             }
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             if (playerListEntries == null)
             {
@@ -236,7 +239,11 @@ namespace Assets.Code
         {
             PhotonNetwork.LeaveRoom();
         }
-
+        public void offline_mode()
+        {
+            Instantiate(new_Offline_Mode1.gameObject);
+            SceneManager.LoadScene("GameScene");
+        }
         public void OnLoginButtonClicked()
         {
             string playerName = PlayerNameInput.text;
@@ -248,7 +255,7 @@ namespace Assets.Code
             }
             else
             {
-                Debug.LogError("Player Name is invalid.");
+                Debug.LogError("Player2 Name is invalid.");
             }
         }
 
@@ -278,7 +285,7 @@ namespace Assets.Code
                 return false;
             }
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(AsteroidsGame.PLAYER_READY, out isPlayerReady))

@@ -38,10 +38,10 @@ namespace Photon.Pun
         public Quaternion rotation;
         public Vector3 position;
         public string prefabName;
-        public Player creator;
+        public Player2 creator;
         public int timestamp;
 
-        public InstantiateParameters(string prefabName, Vector3 position, Quaternion rotation, byte @group, object[] data, byte objLevelPrefix, int[] viewIDs, Player creator, int timestamp)
+        public InstantiateParameters(string prefabName, Vector3 position, Quaternion rotation, byte @group, object[] data, byte objLevelPrefix, int[] viewIDs, Player2 creator, int timestamp)
         {
             this.prefabName = prefabName;
             this.position = position;
@@ -142,10 +142,10 @@ namespace Photon.Pun
         /// </remarks>
         public static string CurrentCluster { get { return (NetworkingClient != null ) ? NetworkingClient.CurrentCluster : null; } }
 
-        /// <summary>Key to save the "Best Region Summary" in the Player Preferences.</summary>
+        /// <summary>Key to save the "Best Region Summary" in the Player2 Preferences.</summary>
         private const string PlayerPrefsKey = "PUNCloudBestRegion";
 
-        /// <summary>Used to store and access the "Best Region Summary" in the Player Preferences.</summary>
+        /// <summary>Used to store and access the "Best Region Summary" in the Player2 Preferences.</summary>
         /// <remarks>
         /// Set this value to null before you connect, to discard the previously selected Best Region for the client.
         /// </remarks>
@@ -323,13 +323,13 @@ namespace Photon.Pun
         public static PunLogLevel LogLevel = PunLogLevel.ErrorsOnly;
 
         /// <summary>
-        /// This client's Player instance is always available, unless the app shuts down.
+        /// This client's Player2 instance is always available, unless the app shuts down.
         /// </summary>
         /// <remarks>
-        /// Useful (e.g.) to set the Custom Player Properties or the NickName for this client anytime.
+        /// Useful (e.g.) to set the Custom Player2 Properties or the NickName for this client anytime.
         /// When the client joins a room, the Custom Properties and other values are synced.
         /// </remarks>
-        public static Player LocalPlayer
+        public static Player2 LocalPlayer
         {
             get
             {
@@ -348,7 +348,7 @@ namespace Photon.Pun
         /// <remarks>
         /// The NickName is just a nickname and does not have to be unique or backed up with some account.<br/>
         /// Set the value any time (e.g. before you connect) and it will be available to everyone you play with.<br/>
-        /// Access the names of players by: Player.NickName. <br/>
+        /// Access the names of players by: Player2.NickName. <br/>
         /// PhotonNetwork.PlayerListOthers is a list of other players - each contains the NickName the remote player set.
         /// </remarks>
         public static string NickName
@@ -367,7 +367,7 @@ namespace Photon.Pun
         /// <summary>
         /// A sorted copy of the players-list of the current room. This is using Linq, so better cache this value. Update when players join / leave.
         /// </summary>
-        public static Player[] PlayerList
+        public static Player2[] PlayerList
         {
             get
             {
@@ -377,14 +377,14 @@ namespace Photon.Pun
                     // TODO: implement more effectively. maybe cache?!
                     return room.Players.Values.OrderBy((x) => x.ActorNumber).ToArray();
                 }
-                return new Player[0];
+                return new Player2[0];
             }
         }
 
         /// <summary>
         /// A sorted copy of the players-list of the current room, excluding this client. This is using Linq, so better cache this value. Update when players join / leave.
         /// </summary>
-        public static Player[] PlayerListOthers
+        public static Player2[] PlayerListOthers
         {
             get
             {
@@ -394,7 +394,7 @@ namespace Photon.Pun
                     // TODO: implement more effectively. maybe cache?!
                     return room.Players.Values.OrderBy((x) => x.ActorNumber).Where(x => !x.IsLocal).ToArray();
                 }
-                return new Player[0];
+                return new Player2[0];
             }
         }
 
@@ -834,7 +834,7 @@ namespace Photon.Pun
         ///
         /// With OfflineMode == true, this always returns the PhotonNetwork.player.
         /// </remarks>
-        public static Player MasterClient
+        public static Player2 MasterClient
         {
             get
             {
@@ -1449,7 +1449,7 @@ namespace Photon.Pun
             {
                 return true;
             }
-
+            if (GameObject.FindGameObjectWithTag("offline") != null) { return false; }
             Debug.LogError("Cannot send messages when not connected. Either connect to Photon OR use offline mode!");
             return false;
         }
@@ -1497,8 +1497,8 @@ namespace Photon.Pun
 
         /// <summary>Request a client to disconnect/kick, which happens if EnableCloseConnection is set to true. Only the master client can do this.</summary>
         /// <remarks>Only the target player gets this event. That player will disconnect if EnableCloseConnection = true.</remarks>
-        /// <param name="kickPlayer">The Player to kick.</param>
-        public static bool CloseConnection(Player kickPlayer)
+        /// <param name="kickPlayer">The Player2 to kick.</param>
+        public static bool CloseConnection(Player2 kickPlayer)
         {
             if (!VerifyCanUseNetwork())
             {
@@ -1563,7 +1563,7 @@ namespace Photon.Pun
         /// </remarks>
         /// <param name="masterClientPlayer">The player to become the next Master Client.</param>
         /// <returns>False when this operation couldn't be done. Must be in a room (not in OfflineMode).</returns>
-        public static bool SetMasterClient(Player masterClientPlayer)
+        public static bool SetMasterClient(Player2 masterClientPlayer)
         {
             if (!InRoom || !VerifyCanUseNetwork() || OfflineMode)
             {
@@ -2294,7 +2294,7 @@ namespace Photon.Pun
         /// You can turn a class into a "serializable type" by following the example in CustomTypes.cs.
         ///
         /// The RaiseEventOptions have some (less intuitive) combination rules:
-        /// If you set targetActors (an array of Player.ID values), the receivers parameter gets ignored.
+        /// If you set targetActors (an array of Player2.ID values), the receivers parameter gets ignored.
         /// When using event caching, the targetActors, receivers and interestGroup can't be used. Buffered events go to all.
         /// When using cachingOption removeFromRoomCache, the eventCode and content are actually not sent but used as filter.
         /// </remarks>
@@ -2505,7 +2505,7 @@ namespace Photon.Pun
             return null;
         }
 
-        private static GameObject NetworkInstantiate(Hashtable networkEvent, Player creator)
+        private static GameObject NetworkInstantiate(Hashtable networkEvent, Player2 creator)
         {
 
             // some values always present:
@@ -2798,7 +2798,7 @@ namespace Photon.Pun
         /// Objects loaded with a scene are ignored, no matter if they have PhotonView components.
         /// </remarks>
         /// <returns>Nothing. Check error debug log for any issues.</returns>
-        public static void DestroyPlayerObjects(Player targetPlayer)
+        public static void DestroyPlayerObjects(Player2 targetPlayer)
         {
             if (targetPlayer == null)
             {
@@ -2871,13 +2871,13 @@ namespace Photon.Pun
         /// <remarks>
         /// This method requires either:
         /// - This is the targetPlayer's client.
-        /// - This client is the Master Client (can remove any Player's RPCs).
+        /// - This client is the Master Client (can remove any Player2's RPCs).
         ///
         /// If the targetPlayer calls RPCs at the same time that this is called,
         /// network lag will determine if those get buffered or cleared like the rest.
         /// </remarks>
         /// <param name="targetPlayer">This player's buffered RPCs get removed from server buffer.</param>
-        public static void RemoveRPCs(Player targetPlayer)
+        public static void RemoveRPCs(Player2 targetPlayer)
         {
             if (!VerifyCanUseNetwork())
             {
@@ -2948,7 +2948,7 @@ namespace Photon.Pun
         /// <summary>
         /// Internal to send an RPC on given PhotonView. Do not call this directly but use: PhotonView.RPC!
         /// </summary>
-        internal static void RPC(PhotonView view, string methodName, Player targetPlayer, bool encrypt, params object[] parameters)
+        internal static void RPC(PhotonView view, string methodName, Player2 targetPlayer, bool encrypt, params object[] parameters)
         {
             if (!VerifyCanUseNetwork())
             {
@@ -2963,7 +2963,7 @@ namespace Photon.Pun
 
             if (LocalPlayer == null)
             {
-                Debug.LogError("RPC can't be sent to target Player being null! Did not send \"" + methodName + "\" call.");
+                Debug.LogError("RPC can't be sent to target Player2 being null! Did not send \"" + methodName + "\" call.");
             }
 
             if (NetworkingClient != null)

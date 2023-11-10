@@ -18,7 +18,7 @@ using Photon.Pun.UtilityScripts;
 namespace Photon.Pun.Demo.SlotRacer
 {
     /// <summary>
-    /// Player control. 
+    /// Player2 control. 
     /// Interface the User Inputs and PUN
     /// Handle the Car instance 
     /// </summary>
@@ -157,7 +157,7 @@ namespace Photon.Pun.Demo.SlotRacer
         /// </summary>
         private IEnumerator Start()
         {
-            // Wait until a Player Number is assigned
+            // Wait until a Player2 Number is assigned
             // PlayerNumbering component must be in the scene.
             yield return new WaitUntil(() => this.photonView.Owner.GetPlayerNumber() >= 0);
 

@@ -130,7 +130,7 @@ namespace Photon.Pun.Demo.Hub
 					"Implements item pickup with RPCs.\n" +
 					"Uses Custom Properties for Teams.\n" +
 					"Counts score per player and team.\n" +
-					"Uses Player extension methods for easy Custom Property access.",
+					"Uses Player2 extension methods for easy Custom Property access.",
 				Scene = "DemoPickup-Scene"
 				}
 			);
@@ -251,7 +251,7 @@ namespace Photon.Pun.Demo.Hub
 					{
 						Title = "Cockpit",
 						Description = "Controls most aspect of PUN.\n" +
-							"Connection, Lobby, Room access, Player control",
+							"Connection, Lobby, Room access, Player2 control",
 					Scene = "PunCockpit-Scene"
 					}
 			);

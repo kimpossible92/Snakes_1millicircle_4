@@ -11,6 +11,7 @@ public class HeroCombat : MonoBehaviour//PunCallbacks
 
     // Combat targeting and range
     public GameObject targetedEnemy;
+    public GameObject targetedObjectInteract;
     [SerializeField] private float heroAttackRange;
     [SerializeField] private float heroRotateSpeedForAttack;
     public bool moveToEnemy = false;
@@ -69,7 +70,12 @@ public class HeroCombat : MonoBehaviour//PunCallbacks
         {
 			CheckAttackRange();
 			CheckCombat();
-		}
+        }
+        else if (GameObject.FindGameObjectWithTag("offline") != null)
+        {
+            CheckAttackRange();
+            CheckCombat();
+        }
 	}
     void CheckCombat()
     {

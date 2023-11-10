@@ -28,7 +28,7 @@ namespace Gameplay.ShipSystems
         public void setBeam() { _weapons.ForEach(w => w.setwp2()); }
         public void Init(UnitBattleIdentity battleIdentity)
         {
-            if (tag == "Player")
+            if (tag == "Player2")
             {
                 var lg = Instantiate(_weapons[0], goParent.transform);
                 var lg2 = Instantiate(_weapons[0], goParent.transform);
@@ -46,7 +46,7 @@ namespace Gameplay.ShipSystems
 
         public void TriggerFire()
         {
-            if (tag == "Player")
+            if (tag == "Player2")
             {
                 _weapons.ForEach(w => w.setpl1());
                 if (ll1 == true) { _weapons.ForEach(w => w.TriggerFire()); }

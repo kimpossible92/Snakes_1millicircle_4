@@ -38,6 +38,7 @@ TagManager:
   - MyPlayer
   - HUDWindowTag
   - Q_Canvas
+  - offline
   layers:
   - Default
   - TransparentFX
@@ -47,9 +48,9 @@ TagManager:
   - UI
   - Terrain
   - Projectile
-  - 
-  - 
-  - 
+  - Counter
+  - Ground
+  - Nature
   - 
   - 
   - 

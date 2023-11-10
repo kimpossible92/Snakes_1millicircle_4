@@ -73,7 +73,7 @@ namespace Gameplay.Weapons
             _projectile = projectiles[wpnum];
             var proj = Instantiate(_projectile, _barrel.position, _barrel.rotation);
             proj.Init(_battleIdentity);
-            if (isplayer) { proj.tag = "Player"; proj.setNamed(Photon.Pun.PhotonNetwork.NickName); PoolManager.GetObject(proj.gameObject.name, proj.gameObject.transform.position, proj.gameObject.transform.rotation); proj.GetComponent<SpriteRenderer>().color = Color.green; }
+            if (isplayer) { proj.tag = "Player2"; proj.setNamed(Photon.Pun.PhotonNetwork.NickName); PoolManager.GetObject(proj.gameObject.name, proj.gameObject.transform.position, proj.gameObject.transform.rotation); proj.GetComponent<SpriteRenderer>().color = Color.green; }
             StartCoroutine(Reload(_cooldown));
         }
 

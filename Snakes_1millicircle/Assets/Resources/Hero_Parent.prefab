@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &269883073689618032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6937386990043046304}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6937386990043046304
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269883073689618032}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.75, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2780260893463712444}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1088052073231522231
 GameObject:
   m_ObjectHideFlags: 0
@@ -13295,6 +13326,8 @@ GameObject:
   - component: {fileID: 2780260893463712436}
   - component: {fileID: 3902844985433965732}
   - component: {fileID: 5168089168757352685}
+  - component: {fileID: 3096186216777869274}
+  - component: {fileID: 1761200291164542021}
   m_Layer: 0
   m_Name: Ekard_Parent
   m_TagString: MyPlayer
@@ -13310,11 +13343,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2780260893463712447}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6937386990043046304}
   - {fileID: 2780260893945933167}
   - {fileID: 1088052073786017431}
   - {fileID: 2780260892932413609}
@@ -13650,6 +13684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heroAttackType: 0
   targetedEnemy: {fileID: 0}
+  targetedObjectInteract: {fileID: 0}
   heroAttackRange: 3
   heroRotateSpeedForAttack: 0.075
   moveToEnemy: 0
@@ -13764,10 +13799,40 @@ MonoBehaviour:
     InterpolateRotateTowardsSpeed: 180
     InterpolateLerpSpeed: 5
   m_ScaleModel:
-    SynchronizeEnabled: 0
+    SynchronizeEnabled: 1
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &3096186216777869274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780260893463712447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9615956079c601444a9c49e0f0d57150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 8
+  gameInput: {fileID: 1761200291164542021}
+  countersLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  kitchenObjectHoldPoint: {fileID: 6937386990043046304}
+--- !u!114 &1761200291164542021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2780260893463712447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62a36c9c007eee0428974b675aa54192, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2780260893524915195
 GameObject:
   m_ObjectHideFlags: 0
@@ -13934,6 +13999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedHero: {fileID: 2780260893463712447}
   heroPlayer: 0
+  GetPlayer: {fileID: 3096186216777869274}
   HudTargetWindow: {fileID: 646326903638402546}
   mouseClick_Prefab: {fileID: 966131537497325730, guid: b00701bbd79e3f548a321327a7401244, type: 3}
   mousePosX: 0

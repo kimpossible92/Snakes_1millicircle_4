@@ -9,7 +9,7 @@ public class CameraFollow_Script : MonoBehaviour
     private bool SetSkill = false;
     [Range(0.01f, 1.0f)]
     [SerializeField] private float cameraSmoothness = 0.5f;
-
+    [SerializeField] private GameObject objCoockibg;
     // Start is called before the first frame update
     void Start()
     {

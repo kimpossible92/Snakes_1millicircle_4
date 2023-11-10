@@ -20,12 +20,12 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 namespace Photon.Pun.UtilityScripts
 {
     /// <summary>
-    /// Implements consistent numbering in a room/game with help of room properties. Access them by Player.GetPlayerNumber() extension.
+    /// Implements consistent numbering in a room/game with help of room properties. Access them by Player2.GetPlayerNumber() extension.
     /// </summary>
     /// <remarks>
     /// indexing ranges from 0 to the maximum number of Players.
     /// indexing remains for the player while in room.
-	/// If a Player is numbered 2 and player numbered 1 leaves, numbered 1 become vacant and will assigned to the future player joining (the first available vacant number is assigned when joining)
+	/// If a Player2 is numbered 2 and player numbered 1 leaves, numbered 1 become vacant and will assigned to the future player joining (the first available vacant number is assigned when joining)
     /// </remarks>
     public class PlayerNumbering : MonoBehaviourPunCallbacks
     {
@@ -38,7 +38,7 @@ namespace Photon.Pun.UtilityScripts
         /// </summary>
         public static PlayerNumbering instance;
 
-        public static Player[] SortedPlayers;
+        public static Player2[] SortedPlayers;
 
         /// <summary>
         /// OnPlayerNumberingChanged delegate. Use
@@ -96,17 +96,17 @@ namespace Photon.Pun.UtilityScripts
             PhotonNetwork.LocalPlayer.CustomProperties.Remove(PlayerNumbering.RoomPlayerIndexedProp);
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
+        public override void OnPlayerEnteredRoom(Player2 newPlayer)
         {
             this.RefreshData();
         }
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             this.RefreshData();
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             if (changedProps != null && changedProps.ContainsKey(PlayerNumbering.RoomPlayerIndexedProp))
             {
@@ -142,10 +142,10 @@ namespace Photon.Pun.UtilityScripts
 
 
             HashSet<int> usedInts = new HashSet<int>();
-            Player[] sorted = PhotonNetwork.PlayerList.OrderBy((p) => p.ActorNumber).ToArray();
+            Player2[] sorted = PhotonNetwork.PlayerList.OrderBy((p) => p.ActorNumber).ToArray();
 
             string allPlayers = "all players: ";
-            foreach (Player player in sorted)
+            foreach (Player2 player in sorted)
             {
                 allPlayers += player.ActorNumber + "=pNr:"+player.GetPlayerNumber()+", ";
 
@@ -199,14 +199,14 @@ namespace Photon.Pun.UtilityScripts
 
 
 
-    /// <summary>Extension used for PlayerRoomIndexing and Player class.</summary>
+    /// <summary>Extension used for PlayerRoomIndexing and Player2 class.</summary>
     public static class PlayerNumberingExtensions
     {
-        /// <summary>Extension for Player class to wrap up access to the player's custom property.
+        /// <summary>Extension for Player2 class to wrap up access to the player's custom property.
 		/// Make sure you use the delegate 'OnPlayerNumberingChanged' to knoiw when you can query the PlayerNumber. Numbering can changes over time or not be yet assigned during the initial phase ( when player creates a room for example)
 		/// </summary>
         /// <returns>persistent index in room. -1 for no indexing</returns>
-        public static int GetPlayerNumber(this Player player)
+        public static int GetPlayerNumber(this Player2 player)
         {
 			if (player == null) {
 				return -1;
@@ -232,9 +232,9 @@ namespace Photon.Pun.UtilityScripts
 		/// Sets the player number.
 		/// It's not recommanded to manually interfere with the playerNumbering, but possible.
 		/// </summary>
-		/// <param name="player">Player.</param>
-		/// <param name="playerNumber">Player number.</param>
-        public static void SetPlayerNumber(this Player player, int playerNumber)
+		/// <param name="player">Player2.</param>
+		/// <param name="playerNumber">Player2 number.</param>
+        public static void SetPlayerNumber(this Player2 player, int playerNumber)
         {
 			if (player == null) {
 				return;

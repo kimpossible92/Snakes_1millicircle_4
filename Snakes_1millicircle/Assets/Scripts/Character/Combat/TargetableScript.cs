@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class TargetableScript : MonoBehaviour
 {
-    public enum EnemyType { Minion, EnemyHero, AllyHero, Hero, FriendlyMinion }
+    public enum EnemyType { Minion, EnemyHero, AllyHero, Hero, FriendlyMinion,any }
     public EnemyType enemyType;
 }

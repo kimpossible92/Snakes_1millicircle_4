@@ -47,7 +47,7 @@ namespace Photon.Pun.UtilityScripts
         private bool isTimerRunning;
 
         private int startTime;
-
+        //[SerializeField] private new_offline_mode new_Offline_Mode1;
         [Header("Reference to a Text component for visualizing the countdown")]
         public Text Text;
 
@@ -145,9 +145,11 @@ namespace Photon.Pun.UtilityScripts
 
         public static bool TryGetStartTime(out int startTimestamp)
         {
+            if (GameObject.FindGameObjectWithTag("offline") != null) { startTimestamp = 0; return false; }
             startTimestamp = PhotonNetwork.ServerTimestamp;
-
+            //Instantiate(new_Offline_Mode1.gameObject);
             object startTimeFromProps;
+
             if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(CountdownStartTime, out startTimeFromProps))
             {
                 startTimestamp = (int)startTimeFromProps;

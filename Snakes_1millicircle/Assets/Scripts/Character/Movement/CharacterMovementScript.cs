@@ -18,11 +18,20 @@ public class CharacterMovementScript : MonoBehaviour
 
     float prevX;
     float prevZ;
-
+    private bool SetHero = false;
+    public void setSetHero()
+    {
+        SetHero = !SetHero;
+    }
+    public bool isSettedMyHero()
+    {
+        return SetHero;
+    }
     // Start is called before the first frame update
     void Start()
     {
         // GetComponents Initialization
+        SetHero = false;
         agent = gameObject.GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 
@@ -54,23 +63,46 @@ public class CharacterMovementScript : MonoBehaviour
 
                 if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
                 {
-                    if (hit.collider.tag == "Floor")
+                    if (hit.collider.tag == "Floor"&&SetHero==true)
                     {
-                        // Move player NavAgent to raycast
-                        agent.SetDestination(hit.point);//print(hit.point);
+                        agent.SetDestination(hit.point); 
+                        if (GetComponent<Player>() != null) { GetComponent<Player>().SetmovedDir(hit.point); }
                         heroCombatScript.targetedEnemy = null;
                         agent.stoppingDistance = 0;
                     }
+                }
+            }
+        }
+        else if (GameObject.FindGameObjectWithTag("offline") != null)
+        {
+            CheckStopMovement();
+            //print("GetComponent<PhotonView>().IsMine");
+            // Check if the player has a target
+            if (heroCombatScript.targetedEnemy != null)
+            {
+                if (heroCombatScript.targetedEnemy.GetComponent<HeroCombat>() != null)
+                {
+                    if (!heroCombatScript.targetedEnemy.GetComponent<HeroCombat>().isHeroAlive)
+                    {
+                        heroCombatScript.targetedEnemy = null;
+                    }
+                }
+            }
 
-                    // Old Player NavAgent Rotation Script
-                    //rotation
-                    //Quaternion rotationToLookAt = Quaternion.LookRotation(hit.point - transform.position);
-                    //float rotationY = Mathf.SmoothDampAngle(transform.eulerAngles.y,
-                    //rotationToLookAt.eulerAngles.y,
-                    //ref rotateVelocity,
-                    //rotateSpeedMovement * (Time.deltaTime * 5));
+            if (Input.GetMouseButtonDown(0))
+            {
+                RaycastHit hit;
 
-                    //transform.eulerAngles = new Vector3(0, rotationY, 0);
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
+                {
+                    if (hit.collider.tag == "Floor" && SetHero == true)
+                    {
+                        // Move player NavAgent to raycast
+                        agent.SetDestination(hit.point); //print(hit.point);
+                        if(GetComponent<Player>()!=null) { GetComponent<Player>().SetmovedDir(hit.point); }
+                        heroCombatScript.targetedEnemy = null;
+                        agent.stoppingDistance = 0;
+                    }
                 }
             }
         }

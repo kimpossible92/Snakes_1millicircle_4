@@ -3,7 +3,7 @@
 //   Part of: Asteroid Demo,
 // </copyright>
 // <summary>
-//  Player Overview Panel
+//  Player2 Overview Panel
 // </summary>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
@@ -31,7 +31,7 @@ namespace Photon.Pun.Demo.Asteroids
         {
             playerListEntries = new Dictionary<int, GameObject>();
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
                 GameObject entry = Instantiate(PlayerOverviewEntryPrefab);
                 entry.transform.SetParent(gameObject.transform);
@@ -47,7 +47,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         #region PUN CALLBACKS
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             GameObject go = null;
             if (this.playerListEntries.TryGetValue(otherPlayer.ActorNumber, out go))
@@ -57,7 +57,7 @@ namespace Photon.Pun.Demo.Asteroids
             }
         }
 
-        public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
             GameObject entry;
             if (playerListEntries.TryGetValue(targetPlayer.ActorNumber, out entry))

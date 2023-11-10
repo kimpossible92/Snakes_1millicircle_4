@@ -1264,7 +1264,7 @@ namespace Photon.Realtime
 
 
     /// <summary>
-    /// Class for constants. These (byte) values define "well known" properties for an Actor / Player.
+    /// Class for constants. These (byte) values define "well known" properties for an Actor / Player2.
     /// </summary>
     /// <remarks>
     /// These constants are used internally.
@@ -1321,7 +1321,7 @@ namespace Photon.Realtime
         /// <summary>(247) Code for ExpectedUsers in a room. Matchmaking keeps a slot open for the players with these userIDs.</summary>
         public const byte ExpectedUsers = (byte)247;
 
-        /// <summary>(246) Player Time To Live. How long any player can be inactive (due to disconnect or leave) before the user gets removed from the playerlist (freeing a slot).</summary>
+        /// <summary>(246) Player2 Time To Live. How long any player can be inactive (due to disconnect or leave) before the user gets removed from the playerlist (freeing a slot).</summary>
         public const byte PlayerTtl = (byte)246;
 
         /// <summary>(245) Room Time To Live. How long a room stays available (and in server-memory), after the last player becomes inactive. After this time, the room gets persisted or destroyed.</summary>
@@ -1943,7 +1943,7 @@ namespace Photon.Realtime
         /// <summary>The number of the Interest Group to send this to. 0 goes to all users but to get 1 and up, clients must subscribe to the group first.</summary>
         public byte InterestGroup;
 
-        /// <summary>A list of Player.ActorNumbers to send this event to. You can implement events that just go to specific users this way.</summary>
+        /// <summary>A list of Player2.ActorNumbers to send this event to. You can implement events that just go to specific users this way.</summary>
         public int[] TargetActors;
 
         /// <summary>Sends the event to All, MasterClient or Others (default). Be careful with MasterClient, as the client might disconnect before it got the event and it gets lost.</summary>

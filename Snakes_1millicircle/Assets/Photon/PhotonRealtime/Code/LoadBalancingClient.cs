@@ -269,8 +269,8 @@ namespace Photon.Realtime
     /// It keeps a state and will automatically execute transitions between the Master and Game Servers.
     /// </summary>
     /// <remarks>
-    /// This class (and the Player class) should be extended to implement your own game logic.
-    /// You can override CreatePlayer as "factory" method for Players and return your own Player instances.
+    /// This class (and the Player2 class) should be extended to implement your own game logic.
+    /// You can override CreatePlayer as "factory" method for Players and return your own Player2 instances.
     /// The State of this class is essential to know when a client is in a lobby (or just on the master)
     /// and when in a game where the actual gameplay should take place.
     /// Extension notes:
@@ -599,7 +599,7 @@ namespace Photon.Realtime
 
 
         /// <summary>The local player is never null but not valid unless the client is in a room, too. The ID will be -1 outside of rooms.</summary>
-        public Player LocalPlayer { get; internal set; }
+        public Player2 LocalPlayer { get; internal set; }
 
         /// <summary>
         /// The nickname of the player (synced with others). Same as client.LocalPlayer.NickName.
@@ -1584,7 +1584,7 @@ namespace Photon.Realtime
         /// When you're in the room, this client's State will become ClientState.Joined.
         ///
         ///
-        /// When entering a room, this client's Player Custom Properties will be sent to the room.
+        /// When entering a room, this client's Player2 Custom Properties will be sent to the room.
         /// Use LocalPlayer.SetCustomProperties to set them, even while not yet in the room.
         /// Note that the player properties will be cached locally and are not wiped when leaving a room.
         ///
@@ -1699,7 +1699,7 @@ namespace Photon.Realtime
         /// When you're in the room, this client's State will become ClientState.Joined.
         ///
         ///
-        /// When entering a room, this client's Player Custom Properties will be sent to the room.
+        /// When entering a room, this client's Player2 Custom Properties will be sent to the room.
         /// Use LocalPlayer.SetCustomProperties to set them, even while not yet in the room.
         /// Note that the player properties will be cached locally and are not wiped when leaving a room.
         ///
@@ -1762,7 +1762,7 @@ namespace Photon.Realtime
         /// If you set room properties in roomOptions, they get ignored when the room is existing already.
         /// This avoids changing the room properties by late joining players.
         ///
-        /// When entering a room, this client's Player Custom Properties will be sent to the room.
+        /// When entering a room, this client's Player2 Custom Properties will be sent to the room.
         /// Use LocalPlayer.SetCustomProperties to set them, even while not yet in the room.
         /// Note that the player properties will be cached locally and are not wiped when leaving a room.
         ///
@@ -1827,7 +1827,7 @@ namespace Photon.Realtime
         /// When you're in the room, this client's State will become ClientState.Joined.
         ///
         ///
-        /// When entering a room, this client's Player Custom Properties will be sent to the room.
+        /// When entering a room, this client's Player2 Custom Properties will be sent to the room.
         /// Use LocalPlayer.SetCustomProperties to set them, even while not yet in the room.
         /// Note that the player properties will be cached locally and are not wiped when leaving a room.
         ///
@@ -1964,14 +1964,14 @@ namespace Photon.Realtime
 
 
         ///  <summary>
-        ///  Updates and synchronizes a Player's Custom Properties. Optionally, expectedProperties can be provided as condition.
+        ///  Updates and synchronizes a Player2's Custom Properties. Optionally, expectedProperties can be provided as condition.
         ///  </summary>
         ///  <remarks>
         ///  Custom Properties are a set of string keys and arbitrary values which is synchronized
         ///  for the players in a Room. They are available when the client enters the room, as
         ///  they are in the response of OpJoin and OpCreate.
         ///
-        ///  Custom Properties either relate to the (current) Room or a Player (in that Room).
+        ///  Custom Properties either relate to the (current) Room or a Player2 (in that Room).
         ///
         ///  Both classes locally cache the current key/values and make them available as
         ///  property: CustomProperties. This is provided only to read them.
@@ -2062,7 +2062,7 @@ namespace Photon.Realtime
             bool res = this.LoadBalancingPeer.OpSetPropertiesOfActor(actorNr, actorProperties, expectedProperties, webFlags);
             if (res && !this.CurrentRoom.BroadcastPropertiesChangeToAll && (expectedProperties == null || expectedProperties.Count == 0))
             {
-                Player target = this.CurrentRoom.GetPlayer(actorNr);
+                Player2 target = this.CurrentRoom.GetPlayer(actorNr);
                 if (target != null)
                 {
                     target.InternalCacheProperties(actorProperties);
@@ -2081,7 +2081,7 @@ namespace Photon.Realtime
         ///  for the players in a Room. They are available when the client enters the room, as
         ///  they are in the response of OpJoin and OpCreate.
         ///
-        ///  Custom Properties either relate to the (current) Room or a Player (in that Room).
+        ///  Custom Properties either relate to the (current) Room or a Player2 (in that Room).
         ///
         ///  Both classes locally cache the current key/values and make them available as
         ///  property: CustomProperties. This is provided only to read them.
@@ -2237,7 +2237,7 @@ namespace Photon.Realtime
                 {
                     // we have a single entry in the actorProperties with one user's name
                     // targets MUST exist before you set properties
-                    Player target = this.CurrentRoom.GetPlayer(targetActorNr);
+                    Player2 target = this.CurrentRoom.GetPlayer(targetActorNr);
                     if (target != null)
                     {
                         Hashtable props = this.ReadoutPropertiesForActorNr(actorProperties, targetActorNr);
@@ -2252,7 +2252,7 @@ namespace Photon.Realtime
                     int actorNr;
                     Hashtable props;
                     string newName;
-                    Player target;
+                    Player2 target;
 
                     foreach (object key in actorProperties.Keys)
                     {
@@ -2327,7 +2327,7 @@ namespace Photon.Realtime
         /// Called internally, when a game was joined or created on the game server successfully.
         /// </summary>
         /// <remarks>
-        /// This reads the response, finds out the local player's actorNumber (a.k.a. Player.ID) and applies properties of the room and players.
+        /// This reads the response, finds out the local player's actorNumber (a.k.a. Player2.ID) and applies properties of the room and players.
         /// Errors for these operations are to be handled before this method is called.
         /// </remarks>
         /// <param name="operationResponse">Contains the server's response for an operation called by this peer.</param>
@@ -2387,7 +2387,7 @@ namespace Photon.Realtime
                         continue;
                     }
 
-                    Player target = this.CurrentRoom.GetPlayer(actorNumber);
+                    Player2 target = this.CurrentRoom.GetPlayer(actorNumber);
                     if (target == null)
                     {
                         this.CurrentRoom.StorePlayer(this.CreatePlayer(string.Empty, actorNumber, false, null));
@@ -2404,9 +2404,9 @@ namespace Photon.Realtime
         /// <param name="isLocal">Sets the distinction if the player to be created is your player or if its assigned to someone else.</param>
         /// <param name="actorProperties">The custom properties for this new player</param>
         /// <returns>The newly created player</returns>
-        protected internal virtual Player CreatePlayer(string actorName, int actorNumber, bool isLocal, Hashtable actorProperties)
+        protected internal virtual Player2 CreatePlayer(string actorName, int actorNumber, bool isLocal, Hashtable actorProperties)
         {
-            Player newPlayer = new Player(actorName, actorNumber, isLocal, actorProperties);
+            Player2 newPlayer = new Player2(actorName, actorNumber, isLocal, actorProperties);
             return newPlayer;
         }
 
@@ -3182,7 +3182,7 @@ namespace Photon.Realtime
         public virtual void OnEvent(EventData photonEvent)
         {
             int actorNr = photonEvent.Sender;
-            Player originatingPlayer = (this.CurrentRoom != null) ? this.CurrentRoom.GetPlayer(actorNr) : null;
+            Player2 originatingPlayer = (this.CurrentRoom != null) ? this.CurrentRoom.GetPlayer(actorNr) : null;
 
             switch (photonEvent.Code)
             {
@@ -3887,13 +3887,13 @@ namespace Photon.Realtime
     public interface IInRoomCallbacks
     {
         /// <summary>
-        /// Called when a remote player entered the room. This Player is already added to the playerlist.
+        /// Called when a remote player entered the room. This Player2 is already added to the playerlist.
         /// </summary>
         /// <remarks>
         /// If your game starts with a certain number of players, this callback can be useful to check the
         /// Room.playerCount and find out if you can start.
         /// </remarks>
-        void OnPlayerEnteredRoom(Player newPlayer);
+        void OnPlayerEnteredRoom(Player2 newPlayer);
 
         /// <summary>
         /// Called when a remote player left the room or became inactive. Check otherPlayer.IsInactive.
@@ -3903,12 +3903,12 @@ namespace Photon.Realtime
         /// be used to notify your game logic.
         ///
         /// Depending on the room's setup, players may become inactive, which means they may return and retake
-        /// their spot in the room. In such cases, the Player stays in the Room.Players dictionary.
+        /// their spot in the room. In such cases, the Player2 stays in the Room.Players dictionary.
         ///
         /// If the player is not just inactive, it gets removed from the Room.Players dictionary, before
         /// the callback is called.
         /// </remarks>
-        void OnPlayerLeftRoom(Player otherPlayer);
+        void OnPlayerLeftRoom(Player2 otherPlayer);
 
 
         /// <summary>
@@ -3931,11 +3931,11 @@ namespace Photon.Realtime
         /// Called when custom player-properties are changed.
         /// </summary>
         /// <remarks>
-        /// Changing properties must be done by Player.SetCustomProperties, which causes this callback locally, too.
+        /// Changing properties must be done by Player2.SetCustomProperties, which causes this callback locally, too.
         /// </remarks>
-        /// <param name="targetPlayer">Contains Player that changed.</param>
+        /// <param name="targetPlayer">Contains Player2 that changed.</param>
         /// <param name="changedProps">Contains the properties that changed.</param>
-        void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps);
+        void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps);
 
         /// <summary>
         /// Called after switching to a new MasterClient when the current one leaves.
@@ -3944,7 +3944,7 @@ namespace Photon.Realtime
         /// This is not called when this client enters a room.
         /// The former MasterClient is still in the player list when this method get called.
         /// </remarks>
-        void OnMasterClientSwitched(Player newMasterClient);
+        void OnMasterClientSwitched(Player2 newMasterClient);
     }
 
 
@@ -3966,7 +3966,7 @@ namespace Photon.Realtime
         /// To receive events, implement IOnEventCallback in any class and register it via AddCallbackTarget
         /// (either in LoadBalancingClient or PhotonNetwork).
         ///
-        /// With the EventData.Sender you can look up the Player who sent the event.
+        /// With the EventData.Sender you can look up the Player2 who sent the event.
         ///
         /// It is best practice to assign an eventCode for each different type of content and action, so the Code
         /// will be essential to read the incoming events.
@@ -4271,7 +4271,7 @@ namespace Photon.Realtime
             this.client = client;
         }
 
-        public void OnPlayerEnteredRoom(Player newPlayer)
+        public void OnPlayerEnteredRoom(Player2 newPlayer)
         {
             this.client.UpdateCallbackTargets();
 
@@ -4281,7 +4281,7 @@ namespace Photon.Realtime
             }
         }
 
-        public void OnPlayerLeftRoom(Player otherPlayer)
+        public void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             this.client.UpdateCallbackTargets();
 
@@ -4301,7 +4301,7 @@ namespace Photon.Realtime
             }
         }
 
-        public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProp)
+        public void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProp)
         {
             this.client.UpdateCallbackTargets();
 
@@ -4311,7 +4311,7 @@ namespace Photon.Realtime
             }
         }
 
-        public void OnMasterClientSwitched(Player newMasterClient)
+        public void OnMasterClientSwitched(Player2 newMasterClient)
         {
             this.client.UpdateCallbackTargets();
 

@@ -3,7 +3,7 @@
 //   Part of: Photon Unity Utilities,
 // </copyright>
 // <summary>
-//  Player list cell representing a given PhotonPlayer
+//  Player2 list cell representing a given PhotonPlayer
 // </summary>
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ using Photon.Pun.UtilityScripts;
 namespace Photon.Pun.Demo.Cockpit
 {
     /// <summary>
-    /// Player list cell representing a given PhotonPlayer
+    /// Player2 list cell representing a given PhotonPlayer
     /// </summary>
     public class PlayerListCell : MonoBehaviour
     {
@@ -37,7 +37,7 @@ namespace Photon.Pun.Demo.Cockpit
 
         public LayoutElement LayoutElement;
 
-        Player _player;
+        Player2 _player;
 
         public bool isInactiveCache;
 
@@ -48,7 +48,7 @@ namespace Photon.Pun.Demo.Cockpit
             UpdateInfo();
         }
 
-        public void AddToList(Player info, bool animate = false)
+        public void AddToList(Player2 info, bool animate = false)
         {
             //Debug.Log("AddToList " + info.ToStringFull());
 

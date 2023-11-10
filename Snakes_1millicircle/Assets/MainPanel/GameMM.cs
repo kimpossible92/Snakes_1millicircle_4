@@ -11,8 +11,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Pun.Demo.Asteroids;
 using System.Collections.Generic;
 using PlayerSystem;
+using UnityEngine.UIElements;
 
-public class PlayerSpaceship { public string NickName;public int score; }
+public class PlayerSpaceship { public string NickName; public int score; }
 public class Const1
 {
     public const float ASTEROIDS_MIN_SPAWN_TIME = 5.0f;
@@ -43,275 +44,320 @@ public class Const1
         return Color.black;
     }
 }
-public class GameMM : MonoBehaviourPunCallbacks
+namespace Photon.Pun.UtilityScripts
 {
-    //public static GameMM Instance = null;
-
-    public Text InfoText;
-
-    //public GameObject[] AsteroidPrefabs;
-
-    #region UNITY
-    [SerializeField] private Image HudTargetWindow;
-    [SerializeField] HUD_Text_Controller healthTexts, manaTexts, expTexts;
-    public void Awake()
+    public class GameMM : MonoBehaviourPunCallbacks
     {
-        //Instance = this;
-        
-    }
+        public static GameMM Instance = null;
 
-    public override void OnEnable()
-    {
-        base.OnEnable();
+        public Text InfoText;
 
-        CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
-    }
+        //public GameObject[] AsteroidPrefabs;
 
-    public void Start()
-    {
-        Hashtable props = new Hashtable
+        #region UNITY
+        [SerializeField] private UnityEngine.UI.Image HudTargetWindow;
+        [SerializeField] HUD_Text_Controller healthTexts, manaTexts, expTexts;
+        public void Awake()
+        {
+            Instance = this;
+
+        }
+        public bool setIsOnline()
+        {
+            if (FindObjectOfType<new_offline_mode>() != null) { return true; }
+            return false;
+        }
+        public override void OnEnable()
+        {
+            base.OnEnable();
+
+            CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
+            if (FindObjectOfType<new_offline_mode>() != null)
+            {
+                offlineStartGame();
+                return;
+            }
+        }
+
+        public void Start()
+        {
+            Hashtable props = new Hashtable
             {
                 {Const1.PLAYER_LOADED_LEVEL, true}
             };
-        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
-    }
+            PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+            StartGame();
+        }
 
-    public override void OnDisable()
-    {
-        base.OnDisable();
-
-        CountdownTimer.OnCountdownTimerHasExpired -= OnCountdownTimerIsExpired;
-    }
-
-    #endregion
-
-    #region COROUTINES
-
-    private IEnumerator SpawnAsteroid()
-    {
-        while (true)
+        public override void OnDisable()
         {
-            yield return new WaitForSeconds(Random.Range(Const1.ASTEROIDS_MIN_SPAWN_TIME, Const1.ASTEROIDS_MAX_SPAWN_TIME));
+            base.OnDisable();
 
-            Vector2 direction = Random.insideUnitCircle;
-            Vector3 position = Vector3.zero;
+            CountdownTimer.OnCountdownTimerHasExpired -= OnCountdownTimerIsExpired;
+        }
 
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        #endregion
+
+        #region COROUTINES
+
+        private IEnumerator SpawnAsteroid()
+        {
+            while (true)
             {
-                // Make it appear on the left/right side
-                position = new Vector3(Mathf.Sign(direction.x) * Camera.main.orthographicSize * Camera.main.aspect, 0, direction.y * Camera.main.orthographicSize);
+                yield return new WaitForSeconds(Random.Range(Const1.ASTEROIDS_MIN_SPAWN_TIME, Const1.ASTEROIDS_MAX_SPAWN_TIME));
+
+                Vector2 direction = Random.insideUnitCircle;
+                Vector3 position = Vector3.zero;
+
+                if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+                {
+                    // Make it appear on the left/right side
+                    position = new Vector3(Mathf.Sign(direction.x) * Camera.main.orthographicSize * Camera.main.aspect, 0, direction.y * Camera.main.orthographicSize);
+                }
+                else
+                {
+                    // Make it appear on the top/bottom
+                    position = new Vector3(direction.x * Camera.main.orthographicSize * Camera.main.aspect, 0, Mathf.Sign(direction.y) * Camera.main.orthographicSize);
+                }
+
+                // Offset slightly so we are not out of screen at creation time (as it would destroy the asteroid right away)
+                position -= position.normalized * 0.1f;
+
+
+                Vector3 force = -position.normalized * 1000.0f;
+                Vector3 torque = Random.insideUnitSphere * Random.Range(500.0f, 1500.0f);
+                object[] instantiationData = { force, torque, true };
+
+                PhotonNetwork.InstantiateRoomObject("BigAsteroid", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
             }
-            else
+        }
+
+        private IEnumerator EndOfGame(string winner, int score)
+        {
+            float timer = 5.0f;
+
+            while (timer > 0.0f)
             {
-                // Make it appear on the top/bottom
-                position = new Vector3(direction.x * Camera.main.orthographicSize * Camera.main.aspect, 0, Mathf.Sign(direction.y) * Camera.main.orthographicSize);
+                InfoText.text = string.Format("Player2 {0} won with {1} points.\n\n\nReturning to login screen in {2} seconds.", winner, score, timer.ToString("n2"));
+
+                yield return new WaitForEndOfFrame();
+
+                timer -= Time.deltaTime;
             }
 
-            // Offset slightly so we are not out of screen at creation time (as it would destroy the asteroid right away)
-            position -= position.normalized * 0.1f;
-
-
-            Vector3 force = -position.normalized * 1000.0f;
-            Vector3 torque = Random.insideUnitSphere * Random.Range(500.0f, 1500.0f);
-            object[] instantiationData = { force, torque, true };
-
-            PhotonNetwork.InstantiateRoomObject("BigAsteroid", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
+            PhotonNetwork.LeaveRoom();
         }
-    }
 
-    private IEnumerator EndOfGame(string winner, int score)
-    {
-        float timer = 5.0f;
+        #endregion
 
-        while (timer > 0.0f)
+        #region PUN CALLBACKS
+
+        public override void OnDisconnected(DisconnectCause cause)
         {
-            InfoText.text = string.Format("Player {0} won with {1} points.\n\n\nReturning to login screen in {2} seconds.", winner, score, timer.ToString("n2"));
-
-            yield return new WaitForEndOfFrame();
-
-            timer -= Time.deltaTime;
+            UnityEngine.SceneManagement.SceneManager.LoadScene("sampleScreen");
         }
 
-        PhotonNetwork.LeaveRoom();
-    }
-
-    #endregion
-
-    #region PUN CALLBACKS
-
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("sampleScreen");
-    }
-
-    public override void OnLeftRoom()
-    {
-        PhotonNetwork.Disconnect();
-    }
-
-    public override void OnMasterClientSwitched(Player newMasterClient)
-    {
-        if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
+        public override void OnLeftRoom()
         {
-            StartCoroutine(SpawnAsteroid());
+            PhotonNetwork.Disconnect();
         }
-    }
 
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        CheckEndOfGame();
-    }
+        public override void OnMasterClientSwitched(Player2 newMasterClient)
+        {
+            if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
+            {
+                StartCoroutine(SpawnAsteroid());
+            }
+        }
 
-    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
-    {
-        if (changedProps.ContainsKey(Const1.PLAYER_LIVES))
+        public override void OnPlayerLeftRoom(Player2 otherPlayer)
         {
             CheckEndOfGame();
-            return;
         }
 
-        if (!PhotonNetwork.IsMasterClient)
+        public override void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
-            return;
-        }
-
-
-        // if there was no countdown yet, the master client (this one) waits until everyone loaded the level and sets a timer start
-        int startTimestamp;
-        bool startTimeIsSet = CountdownTimer.TryGetStartTime(out startTimestamp);
-
-        if (changedProps.ContainsKey(Const1.PLAYER_LOADED_LEVEL))
-        {
-            if (CheckAllPlayerLoadedLevel())
+            if (FindObjectOfType<new_offline_mode>() != null)
             {
-                if (!startTimeIsSet)
+                print("return");
+                return;
+            }
+            if (changedProps.ContainsKey(Const1.PLAYER_LIVES))
+            {
+                CheckEndOfGame();
+                return;
+            }
+
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                return;
+            }
+
+
+            // if there was no countdown yet, the master client (this one) waits until everyone loaded the level and sets a timer start
+            int startTimestamp;
+            bool startTimeIsSet = CountdownTimer.TryGetStartTime(out startTimestamp);
+
+            if (changedProps.ContainsKey(Const1.PLAYER_LOADED_LEVEL))
+            {
+                if (CheckAllPlayerLoadedLevel())
                 {
-                    CountdownTimer.SetStartTime();
+                    if (!startTimeIsSet)
+                    {
+                        CountdownTimer.SetStartTime();
+                    }
                 }
-            }
-            else
-            {
-                // not all players loaded yet. wait:
-                Debug.Log("setting text waiting for players! ", this.InfoText);
-                InfoText.text = "Waiting for other players...";
-            }
-        }
-
-    }
-
-    #endregion
-
-    int playerCount = 0;
-    [SerializeField] private Vector3 spawnPos;
-
-    // called by OnCountdownTimerIsExpired() when the timer ended
-    private void StartGame()
-    {
-        Debug.Log("StartGame!");
-
-        // on rejoin, we have to figure out if the spaceship exists or not
-        // if this is a rejoin (the ship is already network instantiated and will be setup via event) we don't need to call PN.Instantiate
-
-
-        float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
-        //float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
-        int x = Random.Range(-20, 20);
-        float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
-        Vector3 position = new Vector3(0, 0.0f, 0);
-        Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
-        //Debug.Log("[Launcher] JoinRoom Photon");
-        GameObject player = MClass.Instance.GetPlayerPrefab;
-
-        if (PhotonNetwork.LocalPlayer.GetPlayerNumber() > -1)
-            spawnPos = -spawnPos;
-
-        var pgo = PhotonNetwork.Instantiate(player.name, position, Quaternion.identity, 0);
-        pgo.GetComponentInChildren<HeroClass>().setLocalId = FindObjectOfType<InputTargeting>().isLocalUserId;
-        FindObjectOfType<HealthSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider2);
-        FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(),pgo.GetComponent<PlayerView>().slider1);
-        FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>());
-        //FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
-        healthTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
-        manaTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
-        expTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
-
-        FindObjectOfType<TrackEnemyInfo_HUDWindow>().SetHero(pgo.GetComponentInChildren<HeroClass>());
-        FindObjectOfType< HUD_HoverAbilityToolTip>().SetHero(pgo.GetComponentInChildren<HeroClass>());
-        //
-        //FindObjectOfType<InputTargeting>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
-        pgo.GetComponent<InputTargeting>().SetHero(HudTargetWindow);
-        FindObjectOfType<CameraFollow_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
-        playerCount = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-        //print(PhotonNetwork.LocalPlayer.GetPlayerNumber());
-        if (PhotonNetwork.IsMasterClient)
-        {
-            //StartCoroutine(SpawnAsteroid());
-        }
-    }
-
-    private bool CheckAllPlayerLoadedLevel()
-    {
-        foreach (Player p in PhotonNetwork.PlayerList)
-        {
-            object playerLoadedLevel;
-
-            if (p.CustomProperties.TryGetValue(Const1.PLAYER_LOADED_LEVEL, out playerLoadedLevel))
-            {
-                if ((bool)playerLoadedLevel)
+                else
                 {
-                    continue;
+                    // not all players loaded yet. wait:
+                    Debug.Log("setting text waiting for players! ", this.InfoText);
+                    InfoText.text = "Waiting for other players...";
                 }
             }
 
-           
-            return false;
         }
 
-        return true;
-    }
+        #endregion
 
-    private void CheckEndOfGame()
-    {
-        bool allDestroyed = true;
-
-        foreach (Player p in PhotonNetwork.PlayerList)
+        int playerCount = 0;
+        [SerializeField] private Vector3 spawnPos;
+        public void offlineStartGame()
         {
-            object lives;
-            if (p.CustomProperties.TryGetValue(Const1.PLAYER_LIVES, out lives))
+            GameObject player = MClass.Instance.GetPlayerPrefab;
+            Vector3 position = new Vector3(24, 0.0f, 24);
+            var pgo = Instantiate(player, position, Quaternion.identity);
+            //myplayer
+            pgo.GetComponentInChildren<HeroClass>().setLocalId = FindObjectOfType<InputTargeting>().isLocalUserId;
+            FindObjectOfType<HealthSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider2);
+            FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider1);
+            FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            //FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            healthTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+            manaTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+            expTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+
+            FindObjectOfType<TrackEnemyInfo_HUDWindow>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            FindObjectOfType<HUD_HoverAbilityToolTip>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            //
+            //FindObjectOfType<InputTargeting>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
+            pgo.GetComponent<InputTargeting>().SetHero(HudTargetWindow);
+            FindObjectOfType<CameraFollow_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
+            //playerCount = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        }
+        // called by OnCountdownTimerIsExpired() when the timer ended
+        private void StartGame()
+        {
+            if (FindObjectOfType<new_offline_mode>() != null)
             {
-                if ((int)lives > 0)
-                {
-                    allDestroyed = false;
-                    break;
-                }
+                offlineStartGame();
+                return;
             }
-        }
+            Debug.Log("StartGame!");
 
-        if (allDestroyed)
-        {
+            // on rejoin, we have to figure out if the spaceship exists or not
+            // if this is a rejoin (the ship is already network instantiated and will be setup via event) we don't need to call PN.Instantiate
+
+
+            float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
+            //float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
+            int x = Random.Range(-20, 20);
+            float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
+            Vector3 position = new Vector3(24, 0.0f, 24);
+            Quaternion rotation = Quaternion.Euler(0.0f, angularStart, 0.0f);
+            //Debug.Log("[Launcher] JoinRoom Photon");
+            GameObject player = MClass.Instance.GetPlayerPrefab;
+
+            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() > -1)
+                spawnPos = -spawnPos;
+
+            var pgo = PhotonNetwork.Instantiate(player.name, position, Quaternion.identity, 0);
+            pgo.GetComponentInChildren<HeroClass>().setLocalId = FindObjectOfType<InputTargeting>().isLocalUserId;
+            FindObjectOfType<HealthSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider2);
+            FindObjectOfType<ManaSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>(), pgo.GetComponent<PlayerView>().slider1);
+            FindObjectOfType<ExpSlider2D_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            //FindObjectOfType<HUD_Text_Controller>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            healthTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+            manaTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+            expTexts.SetHero(pgo.GetComponentInChildren<HeroClass>());
+
+            FindObjectOfType<TrackEnemyInfo_HUDWindow>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            FindObjectOfType<HUD_HoverAbilityToolTip>().SetHero(pgo.GetComponentInChildren<HeroClass>());
+            //
+            //FindObjectOfType<InputTargeting>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
+            pgo.GetComponent<InputTargeting>().SetHero(HudTargetWindow);
+            FindObjectOfType<CameraFollow_Script>().SetHero(pgo.GetComponentInChildren<HeroClass>().gameObject);
+            playerCount = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+            //print(PhotonNetwork.LocalPlayer.GetPlayerNumber());
             if (PhotonNetwork.IsMasterClient)
             {
-                StopAllCoroutines();
+                //StartCoroutine(SpawnAsteroid());
+            }
+        }
+
+        private bool CheckAllPlayerLoadedLevel()
+        {
+            foreach (Player2 p in PhotonNetwork.PlayerList)
+            {
+                object playerLoadedLevel;
+
+                if (p.CustomProperties.TryGetValue(Const1.PLAYER_LOADED_LEVEL, out playerLoadedLevel))
+                {
+                    if ((bool)playerLoadedLevel)
+                    {
+                        continue;
+                    }
+                }
+
+
+                return false;
             }
 
-            string winner = "";
-            int score = -1;
+            return true;
+        }
 
-            foreach (Player p in PhotonNetwork.PlayerList)
+        private void CheckEndOfGame()
+        {
+            bool allDestroyed = true;
+
+            foreach (Player2 p in PhotonNetwork.PlayerList)
             {
-                if (p.GetScore() > score)
+                object lives;
+                if (p.CustomProperties.TryGetValue(Const1.PLAYER_LIVES, out lives))
                 {
-                    winner = p.NickName;
-                    score = p.GetScore();
+                    if ((int)lives > 0)
+                    {
+                        allDestroyed = false;
+                        break;
+                    }
                 }
             }
 
-            StartCoroutine(EndOfGame(winner, score));
-        }
-    }
+            if (allDestroyed)
+            {
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    StopAllCoroutines();
+                }
 
-    private void OnCountdownTimerIsExpired()
-    {
-        StartGame();
+                string winner = "";
+                int score = -1;
+
+                foreach (Player2 p in PhotonNetwork.PlayerList)
+                {
+                    if (p.GetScore() > score)
+                    {
+                        winner = p.NickName;
+                        score = p.GetScore();
+                    }
+                }
+
+                StartCoroutine(EndOfGame(winner, score));
+            }
+        }
+
+        private void OnCountdownTimerIsExpired()
+        {
+            StartGame();
+        }
     }
 }

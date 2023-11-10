@@ -154,7 +154,7 @@ namespace Photon.Pun
         /// This is not called when this client enters a room.
         /// The former MasterClient is still in the player list when this method get called.
         /// </remarks>
-        public virtual void OnMasterClientSwitched(Player newMasterClient)
+        public virtual void OnMasterClientSwitched(Player2 newMasterClient)
         {
         }
 
@@ -265,13 +265,13 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Called when a remote player entered the room. This Player is already added to the playerlist.
+        /// Called when a remote player entered the room. This Player2 is already added to the playerlist.
         /// </summary>
         /// <remarks>
         /// If your game starts with a certain number of players, this callback can be useful to check the
         /// Room.playerCount and find out if you can start.
         /// </remarks>
-        public virtual void OnPlayerEnteredRoom(Player newPlayer)
+        public virtual void OnPlayerEnteredRoom(Player2 newPlayer)
         {
         }
 
@@ -283,12 +283,12 @@ namespace Photon.Pun
         /// be used to notify your game logic.
         ///
         /// Depending on the room's setup, players may become inactive, which means they may return and retake
-        /// their spot in the room. In such cases, the Player stays in the Room.Players dictionary.
+        /// their spot in the room. In such cases, the Player2 stays in the Room.Players dictionary.
         ///
         /// If the player is not just inactive, it gets removed from the Room.Players dictionary, before
         /// the callback is called.
         /// </remarks>
-        public virtual void OnPlayerLeftRoom(Player otherPlayer)
+        public virtual void OnPlayerLeftRoom(Player2 otherPlayer)
         {
         }
 
@@ -330,15 +330,15 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Called when custom player-properties are changed. Player and the changed properties are passed as object[].
+        /// Called when custom player-properties are changed. Player2 and the changed properties are passed as object[].
         /// </summary>
         /// <remarks>
-        /// Changing properties must be done by Player.SetCustomProperties, which causes this callback locally, too.
+        /// Changing properties must be done by Player2.SetCustomProperties, which causes this callback locally, too.
         /// </remarks>
         ///
-        /// <param name="targetPlayer">Contains Player that changed.</param>
+        /// <param name="targetPlayer">Contains Player2 that changed.</param>
         /// <param name="changedProps">Contains the properties that changed.</param>
-        public virtual void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+        public virtual void OnPlayerPropertiesUpdate(Player2 targetPlayer, Hashtable changedProps)
         {
         }
 
@@ -429,10 +429,10 @@ namespace Photon.Pun
     {
         private readonly int timeInt;
         /// <summary>The sender of a message / event. May be null.</summary>
-        public readonly Player Sender;
+        public readonly Player2 Sender;
         public readonly PhotonView photonView;
 
-        public PhotonMessageInfo(Player player, int timestamp, PhotonView view)
+        public PhotonMessageInfo(Player2 player, int timestamp, PhotonView view)
         {
             this.Sender = player;
             this.timeInt = timestamp;
@@ -743,7 +743,7 @@ namespace Photon.Pun
         /// <summary>
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
-        public void Serialize(ref Player obj)
+        public void Serialize(ref Player2 obj)
         {
             if (this.IsWriting)
             {
@@ -753,7 +753,7 @@ namespace Photon.Pun
             {
                 if (this.readData.Length > this.currentItem)
                 {
-                    obj = (Player) this.readData[this.currentItem];
+                    obj = (Player2) this.readData[this.currentItem];
                     this.currentItem++;
                 }
             }

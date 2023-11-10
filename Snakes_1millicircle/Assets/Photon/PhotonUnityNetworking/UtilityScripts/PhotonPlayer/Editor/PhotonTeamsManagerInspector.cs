@@ -97,7 +97,7 @@ namespace Photon.Pun.UtilityScripts
                     {
                         foldouts[availableTeam.Code] = true;
                     }
-                    Player[] teamMembers;
+                    Player2[] teamMembers;
                     if (photonTeams.TryGetTeamMembers(availableTeam, out teamMembers) && teamMembers != null)
                     {
                         foldouts[availableTeam.Code] = EditorGUILayout.Foldout(foldouts[availableTeam.Code],

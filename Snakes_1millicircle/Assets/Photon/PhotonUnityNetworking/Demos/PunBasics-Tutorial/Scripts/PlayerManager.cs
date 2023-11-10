@@ -16,7 +16,7 @@ namespace Photon.Pun.Demo.PunBasics
 	#pragma warning disable 649
 
     /// <summary>
-    /// Player manager.
+    /// Player2 manager.
     /// Handles fire Input and Beams.
     /// </summary>
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
@@ -33,7 +33,7 @@ namespace Photon.Pun.Demo.PunBasics
 
         #region Private Fields
 
-        [Tooltip("The Player's UI GameObject Prefab")]
+        [Tooltip("The Player2's UI GameObject Prefab")]
         [SerializeField]
         private GameObject playerUiPrefab;
 
@@ -155,7 +155,7 @@ namespace Photon.Pun.Demo.PunBasics
 
         /// <summary>
         /// MonoBehaviour method called when the Collider 'other' enters the trigger.
-        /// Affect Health of the Player if the collider is a beam
+        /// Affect Health of the Player2 if the collider is a beam
         /// Note: when jumping and firing at the same, you'll find that the player's own beam intersects with itself
         /// One could move the collider further away to prevent this or check if the beam belongs to the player.
         /// </summary>
@@ -213,7 +213,7 @@ namespace Photon.Pun.Demo.PunBasics
 
         /// <summary>
         /// MonoBehaviour method called after a new level of index 'level' was loaded.
-        /// We recreate the Player UI because it was destroy when we switched level.
+        /// We recreate the Player2 UI because it was destroy when we switched level.
         /// Also reposition the player if outside the current arena.
         /// </summary>
         /// <param name="level">Level index loaded</param>

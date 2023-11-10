@@ -183,10 +183,10 @@ namespace Photon.Realtime
         }
 
         /// <summary>While inside a Room, this is the list of players who are also in that room.</summary>
-        private Dictionary<int, Player> players = new Dictionary<int, Player>();
+        private Dictionary<int, Player2> players = new Dictionary<int, Player2>();
 
         /// <summary>While inside a Room, this is the list of players who are also in that room.</summary>
-        public Dictionary<int, Player> Players
+        public Dictionary<int, Player2> Players
         {
             get
             {
@@ -211,7 +211,7 @@ namespace Photon.Realtime
             get { return this.expectedUsers; }
         }
 
-        /// <summary>Player Time To Live. How long any player can be inactive (due to disconnect or leave) before the user gets removed from the playerlist (freeing a slot).</summary>
+        /// <summary>Player2 Time To Live. How long any player can be inactive (due to disconnect or leave) before the user gets removed from the playerlist (freeing a slot).</summary>
         public int PlayerTtl
         {
             get { return this.playerTtl; }
@@ -364,7 +364,7 @@ namespace Photon.Realtime
         /// for the players in a Room. They are available when the client enters the room, as
         /// they are in the response of OpJoin and OpCreate.
         ///
-        /// Custom Properties either relate to the (current) Room or a Player (in that Room).
+        /// Custom Properties either relate to the (current) Room or a Player2 (in that Room).
         ///
         /// Both classes locally cache the current key/values and make them available as
         /// property: CustomProperties. This is provided only to read them.
@@ -458,7 +458,7 @@ namespace Photon.Realtime
         /// This is internally used by the LoadBalancing API. There is usually no need to remove players yourself.
         /// This is not a way to "kick" players.
         /// </summary>
-        protected internal virtual void RemovePlayer(Player player)
+        protected internal virtual void RemovePlayer(Player2 player)
         {
             this.Players.Remove(player.ActorNumber);
             player.RoomReference = null;
@@ -490,7 +490,7 @@ namespace Photon.Realtime
         /// </remarks>
         /// <param name="masterClientPlayer">The player to become the next Master Client.</param>
         /// <returns>False when this operation couldn't be done currently. Requires a v4 Photon Server.</returns>
-        public bool SetMasterClient(Player masterClientPlayer)
+        public bool SetMasterClient(Player2 masterClientPlayer)
         {
             if (this.isOffline)
             {
@@ -506,7 +506,7 @@ namespace Photon.Realtime
         /// </summary>
         /// <param name="player">The new player - identified by ID.</param>
         /// <returns>False if the player could not be added (cause it was in the list already).</returns>
-        public virtual bool AddPlayer(Player player)
+        public virtual bool AddPlayer(Player2 player)
         {
             if (!this.Players.ContainsKey(player.ActorNumber))
             {
@@ -520,8 +520,8 @@ namespace Photon.Realtime
         /// <summary>
         /// Updates a player reference in the Players dictionary (no matter if it existed before or not).
         /// </summary>
-        /// <param name="player">The Player instance to insert into the room.</param>
-        public virtual Player StorePlayer(Player player)
+        /// <param name="player">The Player2 instance to insert into the room.</param>
+        public virtual Player2 StorePlayer(Player2 player)
         {
             this.Players[player.ActorNumber] = player;
             player.RoomReference = this;
@@ -542,11 +542,11 @@ namespace Photon.Realtime
         /// <param name="id">ID to look for.</param>
         /// <param name="findMaster">If true, the Master Client is returned for ID == 0.</param>
         /// <returns>The player with the ID or null.</returns>
-        public virtual Player GetPlayer(int id, bool findMaster = false)
+        public virtual Player2 GetPlayer(int id, bool findMaster = false)
         {
             int idToFind = (findMaster && id == 0) ? this.MasterClientId : id;
             
-            Player result = null;
+            Player2 result = null;
             this.Players.TryGetValue(idToFind, out result);
 
             return result;

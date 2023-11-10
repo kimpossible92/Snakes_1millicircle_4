@@ -16,8 +16,8 @@ namespace Photon.Pun.Demo.PunBasics
 	#pragma warning disable 649
 
 	/// <summary>
-	/// Player UI. Constraint the UI to follow a PlayerManager GameObject in the world,
-	/// Affect a slider and text to display Player's name and health
+	/// Player2 UI. Constraint the UI to follow a PlayerManager GameObject in the world,
+	/// Affect a slider and text to display Player2's name and health
 	/// </summary>
 	public class PlayerUI : MonoBehaviour
     {
@@ -27,11 +27,11 @@ namespace Photon.Pun.Demo.PunBasics
         [SerializeField]
         private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
 
-	    [Tooltip("UI Text to display Player's Name")]
+	    [Tooltip("UI Text to display Player2's Name")]
 	    [SerializeField]
 	    private Text playerNameText;
 
-	    [Tooltip("UI Slider to display Player's Health")]
+	    [Tooltip("UI Slider to display Player2's Health")]
 	    [SerializeField]
 	    private Slider playerHealthSlider;
 
@@ -64,18 +64,18 @@ namespace Photon.Pun.Demo.PunBasics
 
 		/// <summary>
 		/// MonoBehaviour method called on GameObject by Unity on every frame.
-		/// update the health slider to reflect the Player's health
+		/// update the health slider to reflect the Player2's health
 		/// </summary>
 		void Update()
 		{
-			// Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player over the network
+			// Destroy itself if the target is null, It's a fail safe when Photon is destroying Instances of a Player2 over the network
 			if (target == null) {
 				Destroy(this.gameObject);
 				return;
 			}
 
 
-			// Reflect the Player Health
+			// Reflect the Player2 Health
 			if (playerHealthSlider != null) {
 				playerHealthSlider.value = target.Health;
 			}
@@ -113,7 +113,7 @@ namespace Photon.Pun.Demo.PunBasics
 		#region Public Methods
 
 		/// <summary>
-		/// Assigns a Player Target to Follow and represent.
+		/// Assigns a Player2 Target to Follow and represent.
 		/// </summary>
 		/// <param name="target">Target.</param>
 		public void SetTarget(PlayerManager _target){
@@ -131,7 +131,7 @@ namespace Photon.Pun.Demo.PunBasics
 
             CharacterController _characterController = this.target.GetComponent<CharacterController> ();
 
-			// Get data from the Player that won't change during the lifetime of this Component
+			// Get data from the Player2 that won't change during the lifetime of this Component
 			if (_characterController != null){
 				characterControllerHeight = _characterController.height;
 			}

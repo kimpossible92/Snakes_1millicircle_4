@@ -174,7 +174,7 @@ namespace Photon.Pun
         /// </summary>
         /// <remarks>
         /// PUN has an ownership concept that defines who can control and destroy each PhotonView.
-        /// True in case the controller matches the local Player.
+        /// True in case the controller matches the local Player2.
         /// True if this is a scene photonview (null owner and ownerId == 0) on the Master client.
         /// </remarks>
         public bool IsMine { get; private set; }
@@ -183,7 +183,7 @@ namespace Photon.Pun
             get { return this.IsMine; }
         }
 
-        public Player Controller { get; private set; }
+        public Player2 Controller { get; private set; }
         
         public int CreatorActorNr { get; private set; }
 
@@ -200,7 +200,7 @@ namespace Photon.Pun
         /// ownership by calling the PhotonView's RequestOwnership method.
         /// The current owner has to implement IPunCallbacks.OnOwnershipRequest to react to the ownership request.
         /// </remarks>
-        public Player Owner { get; private set; }
+        public Player2 Owner { get; private set; }
 
 
 
@@ -217,7 +217,7 @@ namespace Photon.Pun
                     return;
                 }
 
-                Player prevOwner = this.Owner;
+                Player2 prevOwner = this.Owner;
 
                 this.Owner = PhotonNetwork.CurrentRoom == null ? null : PhotonNetwork.CurrentRoom.GetPlayer(value, true);
                 this.ownerActorNr = this.Owner != null ? this.Owner.ActorNumber : value;
@@ -244,7 +244,7 @@ namespace Photon.Pun
             get { return this.controllerActorNr; }
             set
             {
-                Player prevController = this.Controller;
+                Player2 prevController = this.Controller;
 
                 this.Controller = PhotonNetwork.CurrentRoom == null ? null : PhotonNetwork.CurrentRoom.GetPlayer(value, true);
                 if (this.Controller != null && this.Controller.IsInactive)
@@ -440,7 +440,7 @@ namespace Photon.Pun
         /// <remarks>
         /// The owner/controller of a PhotonView is also the client which sends position updates of the GameObject.
         /// </remarks>
-        public void TransferOwnership(Player newOwner)
+        public void TransferOwnership(Player2 newOwner)
         {
             if (newOwner != null)
                 TransferOwnership(newOwner.ActorNumber);
@@ -449,7 +449,7 @@ namespace Photon.Pun
                 if (PhotonNetwork.LogLevel >= PunLogLevel.Informational)
                 {
                     Debug.LogWarning("Attempting to TransferOwnership of GameObject '" + name + "' viewId: " + ViewID +
-                   ", but provided Player newOwner is null.");
+                   ", but provided Player2 newOwner is null.");
                 }
             }
         }
@@ -648,7 +648,7 @@ namespace Photon.Pun
         /// <param name="methodName">The name of a fitting method that was has the RPC attribute.</param>
         /// <param name="targetPlayer">The group of targets and the way the RPC gets sent.</param>
         /// <param name="parameters">The parameters that the RPC method has (must fit this call!).</param>
-        public void RPC(string methodName, Player targetPlayer, params object[] parameters)
+        public void RPC(string methodName, Player2 targetPlayer, params object[] parameters)
         {
             PhotonNetwork.RPC(this, methodName, targetPlayer, false, parameters);
         }
@@ -672,7 +672,7 @@ namespace Photon.Pun
         ///<param name="targetPlayer">The group of targets and the way the RPC gets sent.</param>
         ///<param name="encrypt"> </param>
         ///<param name="parameters">The parameters that the RPC method has (must fit this call!).</param>
-        public void RpcSecure(string methodName, Player targetPlayer, bool encrypt, params object[] parameters)
+        public void RpcSecure(string methodName, Player2 targetPlayer, bool encrypt, params object[] parameters)
         {
             PhotonNetwork.RPC(this, methodName, targetPlayer, encrypt, parameters);
         }

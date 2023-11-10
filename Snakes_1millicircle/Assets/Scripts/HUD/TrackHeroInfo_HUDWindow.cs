@@ -98,6 +98,10 @@ public class TrackHeroInfo_HUDWindow : MonoBehaviour
         #endregion
         SetSkill = true;
     }
+    public void SetMyHero()
+    {
+        FindObjectOfType<CharacterMovementScript>().setSetHero();
+    }
     void Start()
     {
         if (!SetSkill) { return; }
